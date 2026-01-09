@@ -25,3 +25,8 @@ paths: "**/*.{ts,tsx}"
 - Always handle promise rejections
 - Use try/catch for async operations
 - Avoid floating promises (unhandled)
+
+### React Hooks
+- When reviewing `useEffect` or `useState` for derived values, invoke `react-useeffect` skill
+- Prefer derived values over state + effect patterns
+- Use `useMemo` for expensive calculations, not `useEffect`
