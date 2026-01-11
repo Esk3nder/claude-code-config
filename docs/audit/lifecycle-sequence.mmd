@@ -1,0 +1,119 @@
+%%{init: {'theme': 'neutral'}}%%
+sequenceDiagram
+    participant U as User
+    participant CC as Claude Code
+    participant UPS as UserPromptSubmit Hook
+    participant KD as keyword-detector.py
+    participant M as Model (Claude)
+    participant SK as Skills
+    participant CM as Commands
+    participant AG as Agents
+    participant PTU as PostToolUse Hook
+    participant CHK as check-comments.py
+    participant STP as Stop Hooks
+    participant RGT as require-green-tests.sh
+    participant TE as todo-enforcer.sh
+
+    Note over U,TE: === Normal Flow ===
+
+    U->>CC: Submit prompt
+    CC->>UPS: Fire UserPromptSubmit
+    UPS->>KD: Execute hook
+    KD->>KD: Detect keywords
+    alt Keywords found
+        KD-->>CC: Inject guidance
+    else No keywords
+        KD-->>CC: Pass through
+    end
+
+    CC->>M: Process with context
+    M->>SK: Check skill activation
+    SK-->>M: Apply matching skills
+
+    alt Slash command
+        M->>CM: Execute command
+        CM-->>M: Command result
+    end
+
+    alt Delegation needed
+        M->>AG: Spawn subagent
+        AG-->>M: Agent result
+    end
+
+    Note over U,TE: === Tool Use Flow ===
+
+    M->>CC: Write/Edit tool
+    CC->>PTU: Fire PostToolUse
+    PTU->>CHK: Execute (matcher: Write|Edit)
+    CHK->>CHK: Analyze comment ratio
+    alt Ratio > 25%
+        CHK-->>CC: Block with message
+        CC-->>U: Show warning
+    else Ratio OK
+        CHK-->>CC: Allow
+    end
+
+    Note over U,TE: === Stop Flow (Success) ===
+
+    M->>CC: Task complete
+    CC->>STP: Fire Stop hooks
+
+    par Stop hooks execute
+        STP->>RGT: Execute
+        RGT->>RGT: Check test cache
+        alt Cache valid
+            RGT-->>STP: Allow (cached)
+        else Cache invalid
+            RGT->>RGT: Run tests
+            alt Tests pass
+                RGT->>RGT: Update cache
+                RGT-->>STP: Allow
+            else Tests fail
+                RGT-->>STP: Block
+            end
+        end
+    and
+        STP->>TE: Execute
+        TE->>TE: Check todos
+        alt All complete
+            TE-->>STP: Allow
+        else Incomplete todos
+            alt Block count < 10
+                TE-->>STP: Block
+            else Block count >= 10
+                TE-->>STP: Allow (safety valve)
+            end
+        end
+    end
+
+    alt Any hook blocks
+        STP-->>CC: Exit blocked
+        CC-->>U: Show block reason
+        U->>CC: Fix issues
+        Note over U,CC: Loop until hooks pass
+    else All hooks pass
+        STP-->>CC: Exit allowed
+        CC-->>U: Task complete
+    end
+
+    Note over U,TE: === Error Flow ===
+
+    rect rgb(255, 200, 200)
+        M->>CC: Error during execution
+        CC->>STP: Fire Stop hooks anyway
+        Note over STP: Hooks still enforce<br/>tests and todos
+        alt Hooks block
+            STP-->>CC: Must fix before exit
+        else Hooks pass
+            STP-->>CC: Can exit with error
+        end
+    end
+
+    Note over U,TE: === Abort Flow ===
+
+    rect rgb(255, 230, 200)
+        U->>CC: Ctrl+C / Abort
+        CC->>STP: Fire Stop hooks
+        Note over STP: No special handling<br/>for user abort
+        STP-->>CC: Normal hook evaluation
+    end

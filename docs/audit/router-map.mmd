@@ -1,0 +1,99 @@
+%%{init: {'theme': 'neutral'}}%%
+flowchart TB
+    subgraph Input["User Input"]
+        NL[Natural Language]
+        SC[Slash Command]
+        TE[Tool Event]
+        ST[Stop/Exit]
+    end
+
+    subgraph Hooks["Hook Layer"]
+        UPS[UserPromptSubmit]
+        PTU[PostToolUse]
+        STP[Stop]
+    end
+
+    subgraph HookScripts["Hook Scripts"]
+        KD[keyword-detector.py]
+        CC[check-comments.py]
+        RGT[require-green-tests.sh]
+        TE2[todo-enforcer.sh]
+    end
+
+    subgraph Discovery["Discovery Layer"]
+        SD[Skill Discovery<br/>~/.claude/skills/*/SKILL.md]
+        CD[Command Discovery<br/>~/.claude/commands/**/*.md]
+        AD[Agent Discovery<br/>~/.claude/agents/**/*.md]
+        RD[Rule Discovery<br/>~/.claude/rules/**/*.md]
+    end
+
+    subgraph Execution["Execution"]
+        SK[Skills<br/>16 capabilities]
+        CM[Commands<br/>9 slash commands]
+        AG[Agents<br/>19 subagents]
+        RL[Rules<br/>8 path-scoped]
+    end
+
+    subgraph External["External Delegation"]
+        CX[Codex MCP]
+        EX[Expert Prompts<br/>5 experts]
+    end
+
+    subgraph Output["Output"]
+        RES[Response to User]
+        BLK[Blocked Exit]
+        INJ[Injected Guidance]
+    end
+
+    %% Input to Hooks
+    NL --> UPS
+    SC --> CD
+    TE --> PTU
+    ST --> STP
+
+    %% Hook firing
+    UPS --> KD
+    PTU --> CC
+    STP --> RGT
+    STP --> TE2
+
+    %% Hook effects
+    KD --> INJ
+    CC --> RES
+    RGT --> BLK
+    RGT --> RES
+    TE2 --> BLK
+    TE2 --> RES
+
+    %% Discovery to Execution
+    NL --> SD
+    SD --> SK
+    CD --> CM
+    AD --> AG
+    RD --> RL
+
+    %% Execution flows
+    SK --> RES
+    CM --> RES
+    AG --> RES
+    RL --> SK
+
+    %% Delegation
+    CM --> CX
+    CX --> EX
+    EX --> RES
+
+    %% Styling
+    classDef input fill:#e1f5fe,stroke:#01579b
+    classDef hook fill:#fff3e0,stroke:#e65100
+    classDef discovery fill:#f3e5f5,stroke:#7b1fa2
+    classDef execution fill:#e8f5e9,stroke:#2e7d32
+    classDef external fill:#fce4ec,stroke:#c2185b
+    classDef output fill:#eceff1,stroke:#455a64
+
+    class NL,SC,TE,ST input
+    class UPS,PTU,STP,KD,CC,RGT,TE2 hook
+    class SD,CD,AD,RD discovery
+    class SK,CM,AG,RL execution
+    class CX,EX external
+    class RES,BLK,INJ output
