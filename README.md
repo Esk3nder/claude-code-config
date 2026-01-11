@@ -691,6 +691,8 @@ Contributions welcome! Areas of interest:
 ## Acknowledgments
 
 This config is sourced from many talented people in the community:
+- [jarrodwatts/claude-code-config](https://github.com/jarrodwatts/claude-code-config) — Community-maintained Claude Code configuration patterns
+- [EveryInc/compound-engineering-plugin](https://github.com/EveryInc/compound-engineering-plugin) — Engineering workflow patterns for compound AI systems
 - [obra/superpowers](https://github.com/obra/superpowers) — Agent orchestration patterns
 - [numman-ali](https://github.com/numman-ali) — Continuity patterns
 - [parcadei/Continuous-Claude-v3](https://github.com/parcadei/Continuous-Claude-v3) — Inspiration for structure
