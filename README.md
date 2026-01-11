@@ -11,14 +11,14 @@ Copy the prompt from [INSTALL.md](INSTALL.md) and paste it into Claude Code. Cla
 ### Option 2: Git Clone
 
 ```bash
-git clone https://github.com/jarrodwatts/claude-code-config.git ~/.claude
+git clone https://github.com/Esk3nder/claude-code-config.git ~/.claude
 ```
 
 ### Option 3: Selective Install
 
 ```bash
 # Clone elsewhere first
-git clone https://github.com/jarrodwatts/claude-code-config.git /tmp/claude-config
+git clone https://github.com/Esk3nder/claude-code-config.git /tmp/claude-config
 
 # Copy what you need
 cp -r /tmp/claude-config/rules/* ~/.claude/rules/
@@ -46,6 +46,21 @@ Model-invoked capabilities Claude applies automatically.
 | Skill | Description |
 |-------|-------------|
 | `planning-with-files` | Manus-style persistent markdown planning |
+| `react-useeffect` | React useEffect guardrails |
+| `using-superpowers` | Enforce checking relevant skills before acting |
+| `brainstorming` | Generate options/risks before committing |
+| `writing-plans` | Write short verifiable plans to task_plan.md |
+| `executing-plans` | Default plan executor with status updates |
+| `subagent-driven-development` | Delegate large parallelizable plans |
+| `dispatching-parallel-agents` | Launch parallel agents when explicitly requested |
+| `test-driven-development` | Red→Green→Refactor workflow |
+| `verification-before-completion` | Run required checks before finishing |
+| `systematic-debugging` | Reproduce and localize failures methodically |
+| `requesting-code-review` | Prepare concise review handoff |
+| `receiving-code-review` | Process reviewer feedback systematically |
+| `finishing-a-development-branch` | Clean, verify, and hand off a branch |
+| `using-git-worktrees` | Safe parallel branch/worktree habits |
+| `writing-skills` | Guidance for authoring new skills |
 
 ### Agents (`.claude/agents/`)
 
@@ -65,6 +80,9 @@ Custom slash commands.
 | Command | Description |
 |---------|-------------|
 | `interview` | Interactive planning/spec fleshing |
+| `superpowers/brainstorm` | Run the Superpowers brainstorming loop |
+| `superpowers/write-plan` | Create/update `task_plan.md` with short verifiable tasks |
+| `superpowers/execute-plan` | Walk plan tasks, update status, run checks |
 
 ### Hooks (`.claude/hooks/`)
 
@@ -75,6 +93,7 @@ Scripts triggered by Claude Code events.
 | `keyword-detector.py` | UserPromptSubmit | Detects keywords in prompts |
 | `check-comments.py` | PostToolUse (Write/Edit) | Validates comment policy |
 | `todo-enforcer.sh` | Stop | Ensures todos are tracked |
+| `superpowers/require-green-tests.sh` | Stop | Blocks finish unless tests are green (with caching) |
 
 ### CLAUDE.md
 
