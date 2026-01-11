@@ -53,6 +53,21 @@ Fetch and install these files to ~/.claude/:
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/media-interpreter.md → ~/.claude/agents/media-interpreter.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/open-source-librarian.md → ~/.claude/agents/open-source-librarian.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/tech-docs-writer.md → ~/.claude/agents/tech-docs-writer.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/review/index.md → ~/.claude/agents/review/index.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/review/security-sentinel.md → ~/.claude/agents/review/security-sentinel.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/review/performance-oracle.md → ~/.claude/agents/review/performance-oracle.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/review/architecture-strategist.md → ~/.claude/agents/review/architecture-strategist.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/review/data-migration-expert.md → ~/.claude/agents/review/data-migration-expert.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/review/deployment-verification.md → ~/.claude/agents/review/deployment-verification.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/review/code-simplicity.md → ~/.claude/agents/review/code-simplicity.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/review/data-integrity-guardian.md → ~/.claude/agents/review/data-integrity-guardian.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/review/pattern-recognition.md → ~/.claude/agents/review/pattern-recognition.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/review/agent-native.md → ~/.claude/agents/review/agent-native.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/review/typescript.md → ~/.claude/agents/review/typescript.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/review/rails.md → ~/.claude/agents/review/rails.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/review/python.md → ~/.claude/agents/review/python.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/review/dhh-rails.md → ~/.claude/agents/review/dhh-rails.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/review/frontend-races.md → ~/.claude/agents/review/frontend-races.md
 
 **Commands** (slash commands):
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/interview.md → ~/.claude/commands/interview.md

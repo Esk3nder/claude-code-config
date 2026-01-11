@@ -89,6 +89,7 @@ Custom subagents for specialized tasks.
 | `media-interpreter` | Extract info from PDFs/images |
 | `open-source-librarian` | Research OSS with citations |
 | `tech-docs-writer` | Create technical documentation |
+| `review/*` | Specialized review agents (see `agents/review/index.md`) |
 
 ### Commands (`.claude/commands/`)
 

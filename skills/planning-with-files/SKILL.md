@@ -54,7 +54,7 @@ Write notes.md     # Don't stuff context, store in file
 
 ## Plan File Template (`plans/{slug}.md`)
 
-Create this file FIRST for any complex task. Use a slug derived from the task goal: lowercase, hyphen-separated, 3–6 words max.
+Create this file FIRST for any complex task. Use a slug derived from the task goal: lowercase, hyphen-separated, 3–6 words max, prefixed with `YYYYMMDD-`.
 
 ```markdown
 # Task Plan: [Brief Description]

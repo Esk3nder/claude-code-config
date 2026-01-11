@@ -7,7 +7,7 @@ description: Workflows plan writer: create or update a short, verifiable task pl
 You are invoking **workflows-writing-plans**. Target file: `$ARGUMENTS` (default `plans/{slug}.md`).
 
 If `$ARGUMENTS` is empty:
-- Derive `{slug}` from the goal: lowercase, hyphen-separated, 3–6 words max.
+- Derive `{slug}` from the goal: lowercase, hyphen-separated, 3–6 words max, prefixed with `YYYYMMDD-`.
 - Ensure `plans/` exists before writing.
 
 1) Ensure the file exists; create headers: Goal, Constraints, Tasks, Verification.
