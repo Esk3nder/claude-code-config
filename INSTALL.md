@@ -33,7 +33,7 @@ Fetch and install these files to ~/.claude/:
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/react-useeffect/SKILL.md → ~/.claude/skills/react-useeffect/SKILL.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/react-useeffect/alternatives.md → ~/.claude/skills/react-useeffect/alternatives.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/react-useeffect/anti-patterns.md → ~/.claude/skills/react-useeffect/anti-patterns.md
-- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/using-superpowers/SKILL.md → ~/.claude/skills/using-superpowers/SKILL.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/using-workflows/SKILL.md → ~/.claude/skills/using-workflows/SKILL.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/brainstorming/SKILL.md → ~/.claude/skills/brainstorming/SKILL.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/writing-plans/SKILL.md → ~/.claude/skills/writing-plans/SKILL.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/executing-plans/SKILL.md → ~/.claude/skills/executing-plans/SKILL.md
@@ -56,15 +56,17 @@ Fetch and install these files to ~/.claude/:
 
 **Commands** (slash commands):
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/interview.md → ~/.claude/commands/interview.md
-- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/superpowers/brainstorm.md → ~/.claude/commands/superpowers/brainstorm.md
-- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/superpowers/write-plan.md → ~/.claude/commands/superpowers/write-plan.md
-- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/superpowers/execute-plan.md → ~/.claude/commands/superpowers/execute-plan.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/workflows/brainstorm.md → ~/.claude/commands/workflows/brainstorm.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/workflows/plan.md → ~/.claude/commands/workflows/plan.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/workflows/work.md → ~/.claude/commands/workflows/work.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/workflows/review.md → ~/.claude/commands/workflows/review.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/workflows/compound.md → ~/.claude/commands/workflows/compound.md
 
 **Hooks** (event-triggered scripts):
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/hooks/keyword-detector.py → ~/.claude/hooks/keyword-detector.py
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/hooks/check-comments.py → ~/.claude/hooks/check-comments.py
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/hooks/todo-enforcer.sh → ~/.claude/hooks/todo-enforcer.sh
-- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/hooks/superpowers/require-green-tests.sh → ~/.claude/hooks/superpowers/require-green-tests.sh
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/hooks/workflows/require-green-tests.sh → ~/.claude/hooks/workflows/require-green-tests.sh
 
 **Hook wiring (`~/.claude/settings.json`)**
 Add or merge this snippet so the hooks actually run:
@@ -78,13 +80,13 @@ Add or merge this snippet so the hooks actually run:
       { "matcher": "Write|Edit", "hooks": [{ "type": "command", "command": "./hooks/check-comments.py" }] }
     ],
     "Stop": [
-      { "hooks": [{ "type": "command", "command": "./hooks/superpowers/require-green-tests.sh" }] },
+      { "hooks": [{ "type": "command", "command": "./hooks/workflows/require-green-tests.sh" }] },
       { "hooks": [{ "type": "command", "command": "./hooks/todo-enforcer.sh" }] }
     ]
   }
 }
 ```
-Set `SUPERPOWERS_TEST_CMD` to override the test command used by the Stop gate.
+Set `WORKFLOWS_TEST_CMD` to override the test command used by the Stop gate (legacy `SUPERPOWERS_TEST_CMD` still works).
 
 **Global Instructions**:
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/CLAUDE.md → ~/.claude/CLAUDE.md
@@ -111,9 +113,9 @@ Create directories as needed, fetch files with curl, and make hook scripts execu
 | Component | Files | Description |
 |-----------|-------|-------------|
 | Rules | 4 | TypeScript, testing, comments, Foundry conventions |
-| Skills | 16 | Planning-with-files, React useEffect, plus the Superpowers workflow pack (brainstorm → plan → execute → TDD/verification → review → finish, worktrees, writing-skills) |
+| Skills | 16 | Planning-with-files, React useEffect, plus the Workflows pack (brainstorm → plan → work → TDD/verification → review → finish, worktrees, writing-skills) |
 | Agents | 4 | Codebase search, media interpreter, OSS librarian, docs writer |
-| Commands | 4 | Interview, Superpowers brainstorm, write-plan, execute-plan |
+| Commands | 6 | Interview, Workflows brainstorm, plan, work, review, compound |
 | Hooks | 4 | Keyword detector, comment checker, todo enforcer, require-green-tests Stop gate |
 | CLAUDE.md | 1 | Global instructions and workflow preferences |
 
