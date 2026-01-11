@@ -25,6 +25,10 @@ Fetch and install these files to ~/.claude/:
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/rules/testing.md → ~/.claude/rules/testing.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/rules/comments.md → ~/.claude/rules/comments.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/rules/forge.md → ~/.claude/rules/forge.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/rules/delegator/orchestration.md → ~/.claude/rules/delegator/orchestration.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/rules/delegator/triggers.md → ~/.claude/rules/delegator/triggers.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/rules/delegator/model-selection.md → ~/.claude/rules/delegator/model-selection.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/rules/delegator/delegation-format.md → ~/.claude/rules/delegator/delegation-format.md
 
 **Skills** (model-invoked capabilities):
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/planning-with-files/SKILL.md → ~/.claude/skills/planning-with-files/SKILL.md
@@ -69,6 +73,13 @@ Fetch and install these files to ~/.claude/:
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/review/dhh-rails.md → ~/.claude/agents/review/dhh-rails.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/review/frontend-races.md → ~/.claude/agents/review/frontend-races.md
 
+**Prompts** (Codex expert prompts):
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/prompts/delegator/architect.md → ~/.claude/prompts/delegator/architect.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/prompts/delegator/plan-reviewer.md → ~/.claude/prompts/delegator/plan-reviewer.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/prompts/delegator/scope-analyst.md → ~/.claude/prompts/delegator/scope-analyst.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/prompts/delegator/code-reviewer.md → ~/.claude/prompts/delegator/code-reviewer.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/prompts/delegator/security-analyst.md → ~/.claude/prompts/delegator/security-analyst.md
+
 **Commands** (slash commands):
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/interview.md → ~/.claude/commands/interview.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/workflows/brainstorm.md → ~/.claude/commands/workflows/brainstorm.md
@@ -76,12 +87,20 @@ Fetch and install these files to ~/.claude/:
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/workflows/work.md → ~/.claude/commands/workflows/work.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/workflows/review.md → ~/.claude/commands/workflows/review.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/workflows/compound.md → ~/.claude/commands/workflows/compound.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/claude-delegator/setup.md → ~/.claude/commands/claude-delegator/setup.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/claude-delegator/task.md → ~/.claude/commands/claude-delegator/task.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/claude-delegator/uninstall.md → ~/.claude/commands/claude-delegator/uninstall.md
 
 **Hooks** (event-triggered scripts):
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/hooks/keyword-detector.py → ~/.claude/hooks/keyword-detector.py
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/hooks/check-comments.py → ~/.claude/hooks/check-comments.py
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/hooks/todo-enforcer.sh → ~/.claude/hooks/todo-enforcer.sh
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/hooks/workflows/require-green-tests.sh → ~/.claude/hooks/workflows/require-green-tests.sh
+
+**Config** (reference snippets):
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/config/delegator/mcp-servers.example.json → ~/.claude/config/delegator/mcp-servers.example.json
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/config/delegator/providers.json → ~/.claude/config/delegator/providers.json
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/config/delegator/experts.json → ~/.claude/config/delegator/experts.json
 
 **Hook wiring (`~/.claude/settings.json`)**
 Add or merge this snippet so the hooks actually run:
@@ -127,11 +146,13 @@ Create directories as needed, fetch files with curl, and make hook scripts execu
 
 | Component | Files | Description |
 |-----------|-------|-------------|
-| Rules | 4 | TypeScript, testing, comments, Foundry conventions |
+| Rules | 8 | TypeScript/testing/comments/Foundry + delegator orchestration |
 | Skills | 16 | Planning-with-files, React useEffect, plus the Workflows pack (brainstorm → plan → work → TDD/verification → review → finish, worktrees, writing-skills) |
 | Agents | 4 | Codebase search, media interpreter, OSS librarian, docs writer |
-| Commands | 6 | Interview, Workflows brainstorm, plan, work, review, compound |
+| Prompts | 5 | Codex expert prompts (delegator) |
+| Commands | 9 | Interview, Workflows brainstorm/plan/work/review/compound, delegator setup/task/uninstall |
 | Hooks | 4 | Keyword detector, comment checker, todo enforcer, require-green-tests Stop gate |
+| Config | 3 | MCP config + expert mapping (reference) |
 | CLAUDE.md | 1 | Global instructions and workflow preferences |
 
 ## After Installation

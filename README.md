@@ -4,9 +4,9 @@ A curated collection of skills, agents, rules, hooks, and workflows for Claude C
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 ![Skills](https://img.shields.io/badge/Skills-16-green)
-![Agents](https://img.shields.io/badge/Agents-18-orange)
+![Agents](https://img.shields.io/badge/Agents-19-orange)
 ![Hooks](https://img.shields.io/badge/Hooks-4-purple)
-![Rules](https://img.shields.io/badge/Rules-4-yellow)
+![Rules](https://img.shields.io/badge/Rules-8-yellow)
 
 ## Table of Contents
 
@@ -19,6 +19,7 @@ A curated collection of skills, agents, rules, hooks, and workflows for Claude C
   - [Taxonomy](#taxonomy)
   - [Skills](#skills)
   - [Agents](#agents)
+  - [Prompts](#prompts)
   - [Rules](#rules)
   - [Hooks](#hooks)
   - [Commands/Workflows](#commandsworkflows)
@@ -27,6 +28,7 @@ A curated collection of skills, agents, rules, hooks, and workflows for Claude C
 - [Repository Structure](#repository-structure)
 - [Installation](#installation)
 - [Configuration](#configuration)
+- [Delegator Integration](#delegator-integration)
 - [Contributing](#contributing)
 
 ## Why This Config?
@@ -156,7 +158,7 @@ After installing, try these to explore:
 │                                                                     │
 │  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐             │
 │  │   Skills    │    │   Agents    │    │    Rules    │             │
-│  │    (16)     │───▶│     (5+)    │◀───│     (4)     │             │
+│  │    (16)     │───▶│     (19)    │◀───│     (8)     │             │
 │  └─────────────┘    └─────────────┘    └─────────────┘             │
 │         │                  │                  │                     │
 │         │                  │                  │                     │
@@ -169,7 +171,7 @@ After installing, try these to explore:
 │         ▼                  ▼                  ▼                     │
 │  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐             │
 │  │    Hooks    │    │  Commands   │    │   Plans     │             │
-│  │     (4)     │    │     (6)     │    │  (files)    │             │
+│  │     (4)     │    │     (9)     │    │  (files)    │             │
 │  └─────────────┘    └─────────────┘    └─────────────┘             │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
@@ -310,6 +312,18 @@ Agents are specialized subagents for specific domains. Located in `.claude/agent
 | `media-interpreter` | Extract info from PDFs/images | Processing non-code files |
 | `review/*` | Specialized code reviewers | Multi-perspective review |
 
+### Prompts
+
+Delegator expert prompts are loaded when routing to Codex experts. Stored in `.claude/prompts/delegator/`.
+
+| Prompt | Purpose |
+|--------|---------|
+| `architect.md` | System design and tradeoff analysis |
+| `plan-reviewer.md` | Plan completeness and verification |
+| `scope-analyst.md` | Requirements ambiguity and scope |
+| `code-reviewer.md` | Adversarial code review |
+| `security-analyst.md` | Threat modeling and hardening |
+
 ### Rules
 
 Rules are path-scoped instructions auto-loaded when working with matching files. Located in `.claude/rules/`.
@@ -320,6 +334,10 @@ Rules are path-scoped instructions auto-loaded when working with matching files.
 | `testing.md` | `**/*.{test,spec}.ts` | Testing patterns |
 | `comments.md` | All files | Comment policy (no obvious comments) |
 | `forge.md` | `**/*.sol` | Foundry/ZKsync Solidity rules |
+| `delegator/orchestration.md` | Global | Codex orchestration flow |
+| `delegator/triggers.md` | Global | Delegation trigger rules |
+| `delegator/model-selection.md` | Global | Expert selection + modes |
+| `delegator/delegation-format.md` | Global | 7-section delegation template |
 
 ### Hooks
 
@@ -359,6 +377,14 @@ Commands provide structured workflows. Located in `.claude/commands/`.
 │                                                                    │
 └────────────────────────────────────────────────────────────────────┘
 ```
+
+Delegator commands:
+
+| Command | Purpose |
+|---------|---------|
+| `/claude-delegator/setup` | Configure Codex MCP + install delegator rules/prompts |
+| `/claude-delegator/task` | Delegate a task to a Codex expert |
+| `/claude-delegator/uninstall` | Remove Codex MCP config and delegator rules/prompts |
 
 ## Common Workflows
 
@@ -501,7 +527,7 @@ claude-code-config/
 │   ├── react-useeffect/
 │   └── ...
 │
-├── agents/                   # Specialized subagents (5+)
+├── agents/                   # Specialized subagents (19)
 │   ├── codebase-search.md
 │   ├── media-interpreter.md
 │   ├── open-source-librarian.md
@@ -513,11 +539,24 @@ claude-code-config/
 │       ├── security-sentinel.md
 │       └── ...
 │
-├── rules/                    # Path-scoped instructions (4)
+├── rules/                    # Path-scoped instructions (8)
 │   ├── typescript.md         # **/*.{ts,tsx}
 │   ├── testing.md            # **/*.{test,spec}.ts
 │   ├── comments.md           # All files
-│   └── forge.md              # **/*.sol
+│   ├── forge.md              # **/*.sol
+│   └── delegator/            # Codex delegation rules
+│       ├── orchestration.md
+│       ├── triggers.md
+│       ├── model-selection.md
+│       └── delegation-format.md
+│
+├── prompts/                  # Codex expert prompts (5)
+│   └── delegator/
+│       ├── architect.md
+│       ├── plan-reviewer.md
+│       ├── scope-analyst.md
+│       ├── code-reviewer.md
+│       └── security-analyst.md
 │
 ├── hooks/                    # Event-triggered scripts (4)
 │   ├── keyword-detector.py   # UserPromptSubmit
@@ -526,17 +565,28 @@ claude-code-config/
 │   └── workflows/
 │       └── require-green-tests.sh  # Stop
 │
-├── commands/                 # Slash commands (6)
+├── commands/                 # Slash commands (9)
 │   ├── interview.md          # /interview
-│   └── workflows/
+│   ├── workflows/
 │       ├── brainstorm.md     # /workflows/brainstorm
 │       ├── plan.md           # /workflows/plan
 │       ├── work.md           # /workflows/work
 │       ├── review.md         # /workflows/review
 │       └── compound.md       # /workflows/compound
+│   └── claude-delegator/
+│       ├── setup.md          # /claude-delegator/setup
+│       ├── task.md           # /claude-delegator/task
+│       └── uninstall.md      # /claude-delegator/uninstall
+│
+├── config/                   # Config snippets
+│   └── delegator/
+│       ├── mcp-servers.example.json
+│       ├── providers.json
+│       └── experts.json
 │
 └── docs/                     # Documentation
-    └── workflows-integration.md
+    ├── workflows-integration.md
+    └── delegator-integration.md
 ```
 
 ## Installation
@@ -603,6 +653,15 @@ Global instructions loaded into every session. Defines:
 - Risk boundaries
 - Verification requirements
 
+## Delegator Integration
+
+This config vendors claude-delegator rules, prompts, and commands for Codex expert delegation.
+
+- Setup: run `/claude-delegator/setup` (requires Codex CLI + `codex login`)
+- Prompts: `~/.claude/prompts/delegator/*.md` (customized expert behavior)
+- Mapping: `config/delegator/experts.json`
+- Details: `docs/delegator-integration.md`
+
 ## Recommended Plugins
 
 ```bash
@@ -617,9 +676,8 @@ claude plugin install ralph-loop
 claude plugin marketplace add jarrodwatts/claude-hud
 claude plugin install claude-hud@claude-hud
 
-# Codex adversarial review (used by /workflows/review)
-claude plugin marketplace add jarrodwatts/claude-delegator
-claude plugin install claude-delegator@jarrodwatts/claude-delegator
+# Codex delegation (bundled in this repo)
+# Run /claude-delegator/setup to configure MCP
 ```
 
 ## Contributing

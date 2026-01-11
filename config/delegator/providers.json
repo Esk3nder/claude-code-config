@@ -1,0 +1,37 @@
+{
+  "providers": {
+    "codex": {
+      "name": "Codex (GPT)",
+      "description": "OpenAI GPT models via Codex CLI - specialized expert subagents",
+      "cli": "codex",
+      "install": "npm install -g @openai/codex",
+      "auth": "codex login",
+      "mcp": {
+        "type": "stdio",
+        "command": "codex",
+        "args": ["-m", "gpt-5.2-codex", "mcp-server"]
+      },
+      "promptDir": "prompts/delegator",
+      "experts": [
+        "architect",
+        "plan-reviewer",
+        "scope-analyst",
+        "code-reviewer",
+        "security-analyst"
+      ],
+      "strengths": [
+        "architecture",
+        "code-review",
+        "security",
+        "requirements-analysis",
+        "plan-validation"
+      ],
+      "avoid": [
+        "simple-operations",
+        "trivial-decisions",
+        "research",
+        "first-attempt-fixes"
+      ]
+    }
+  }
+}

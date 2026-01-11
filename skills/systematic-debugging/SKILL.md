@@ -11,7 +11,7 @@ Steps:
 1. Reproduce: capture exact command/input/output and frequency.
 2. Localize: binary search or log to find the smallest failing surface.
 3. Form hypotheses; test one at a time.
-4. If two hypotheses fail or the issue persists, run a Codex counter-review via `/claude-delegator:task` to solicit alternative hypotheses, repro ideas, and risky assumptions.
+4. If two hypotheses fail or the issue persists, run a Codex counter-review via `/claude-delegator/task` to solicit alternative hypotheses, repro ideas, and risky assumptions.
 5. Inspect recent changes and configs affecting the area.
 6. Confirm fix with the original repro + an automated test if possible.
 7. If tests are missing, branch to `test-driven-development` to lock the fix.
