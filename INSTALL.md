@@ -1,6 +1,15 @@
 # Install via Claude Code
 
-Copy the prompt below and paste it into Claude Code to install this configuration.
+## Quick Install (Recommended)
+
+```bash
+git clone https://github.com/Esk3nder/claude-code-config.git /tmp/claude-config
+cd /tmp/claude-config && ./install.sh
+```
+
+## Manual Install via Claude Code
+
+Alternatively, copy the prompt below and paste it into Claude Code to install this configuration.
 
 ---
 

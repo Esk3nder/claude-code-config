@@ -9,6 +9,45 @@ import sys
 import re
 from pathlib import Path
 
+
+def safe_json_parse(raw: str) -> dict:
+    """Parse JSON, handling literal control characters in string values.
+
+    Claude Code may send JSON with literal newlines in string fields (e.g., content).
+    Standard json.loads() rejects these as invalid. This function escapes control
+    characters found inside JSON string values before parsing.
+    """
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        # Escape control characters inside string values
+        fixed = []
+        in_string = False
+        escape_next = False
+        for char in raw:
+            if escape_next:
+                fixed.append(char)
+                escape_next = False
+            elif char == '\\':
+                fixed.append(char)
+                escape_next = True
+            elif char == '"':
+                fixed.append(char)
+                in_string = not in_string
+            elif in_string and ord(char) < 32:
+                # Control character inside string - escape it
+                if char == '\n':
+                    fixed.append('\\n')
+                elif char == '\r':
+                    fixed.append('\\r')
+                elif char == '\t':
+                    fixed.append('\\t')
+                else:
+                    fixed.append(f'\\u{ord(char):04x}')
+            else:
+                fixed.append(char)
+        return json.loads(''.join(fixed))
+
 # Configuration
 MAX_COMMENT_RATIO = 0.25  # 25% comments triggers warning
 CODE_EXTENSIONS = {'.ts', '.tsx', '.js', '.jsx', '.py', '.go', '.rs', '.java', '.cpp', '.c', '.sol'}
@@ -102,10 +141,10 @@ def main():
         with open(debug_log, "a") as f:
             f.write(f"\n=== check-comments.py called ===\n")
             f.write(f"Raw input: {raw_input[:2000]}\n")
-        input_data = json.loads(raw_input)
+        input_data = safe_json_parse(raw_input)
     except json.JSONDecodeError as e:
         with open(debug_log, "a") as f:
-            f.write(f"JSON decode error: {e}\n")
+            f.write(f"JSON decode error (after repair attempt): {e}\n")
         sys.exit(0)
     except Exception as e:
         with open(debug_log, "a") as f:
