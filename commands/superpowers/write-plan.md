@@ -1,0 +1,12 @@
+---
+allowed-tools: Read, Glob, Grep, Write, Edit
+argument-hint: [plan-file]
+description: Superpowers plan writer: create or update a short, verifiable task plan in the given file.
+---
+
+You are invoking **superpowers-writing-plans**. Target file: `$ARGUMENTS` (default `task_plan.md`).
+
+1) Ensure the file exists; create headers: Goal, Constraints, Tasks, Verification.
+2) List 4–8 tasks max; each task = action + files + check box + verification.
+3) Add overall verification block (tests/linters/manual) and owners if relevant.
+4) Keep tasks small and ordered; avoid vague placeholders.

@@ -7,40 +7,78 @@ Copy the prompt below and paste it into Claude Code to install this configuratio
 ## Copy This Prompt
 
 ```
-Install Claude Code configuration from https://github.com/jarrodwatts/claude-code-config
+Install Claude Code configuration from https://github.com/Esk3nder/claude-code-config
 
 Fetch and install these files to ~/.claude/:
 
 **Rules** (path-scoped instructions):
-- https://raw.githubusercontent.com/jarrodwatts/claude-code-config/master/rules/typescript.md → ~/.claude/rules/typescript.md
-- https://raw.githubusercontent.com/jarrodwatts/claude-code-config/master/rules/testing.md → ~/.claude/rules/testing.md
-- https://raw.githubusercontent.com/jarrodwatts/claude-code-config/master/rules/comments.md → ~/.claude/rules/comments.md
-- https://raw.githubusercontent.com/jarrodwatts/claude-code-config/master/rules/forge.md → ~/.claude/rules/forge.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/rules/typescript.md → ~/.claude/rules/typescript.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/rules/testing.md → ~/.claude/rules/testing.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/rules/comments.md → ~/.claude/rules/comments.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/rules/forge.md → ~/.claude/rules/forge.md
 
 **Skills** (model-invoked capabilities):
-- https://raw.githubusercontent.com/jarrodwatts/claude-code-config/master/skills/planning-with-files/SKILL.md → ~/.claude/skills/planning-with-files/SKILL.md
-- https://raw.githubusercontent.com/jarrodwatts/claude-code-config/master/skills/planning-with-files/examples.md → ~/.claude/skills/planning-with-files/examples.md
-- https://raw.githubusercontent.com/jarrodwatts/claude-code-config/master/skills/planning-with-files/reference.md → ~/.claude/skills/planning-with-files/reference.md
-- https://raw.githubusercontent.com/jarrodwatts/claude-code-config/master/skills/react-useeffect/SKILL.md → ~/.claude/skills/react-useeffect/SKILL.md
-- https://raw.githubusercontent.com/jarrodwatts/claude-code-config/master/skills/react-useeffect/alternatives.md → ~/.claude/skills/react-useeffect/alternatives.md
-- https://raw.githubusercontent.com/jarrodwatts/claude-code-config/master/skills/react-useeffect/anti-patterns.md → ~/.claude/skills/react-useeffect/anti-patterns.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/planning-with-files/SKILL.md → ~/.claude/skills/planning-with-files/SKILL.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/planning-with-files/examples.md → ~/.claude/skills/planning-with-files/examples.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/planning-with-files/reference.md → ~/.claude/skills/planning-with-files/reference.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/react-useeffect/SKILL.md → ~/.claude/skills/react-useeffect/SKILL.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/react-useeffect/alternatives.md → ~/.claude/skills/react-useeffect/alternatives.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/react-useeffect/anti-patterns.md → ~/.claude/skills/react-useeffect/anti-patterns.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/using-superpowers/SKILL.md → ~/.claude/skills/using-superpowers/SKILL.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/brainstorming/SKILL.md → ~/.claude/skills/brainstorming/SKILL.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/writing-plans/SKILL.md → ~/.claude/skills/writing-plans/SKILL.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/executing-plans/SKILL.md → ~/.claude/skills/executing-plans/SKILL.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/subagent-driven-development/SKILL.md → ~/.claude/skills/subagent-driven-development/SKILL.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/dispatching-parallel-agents/SKILL.md → ~/.claude/skills/dispatching-parallel-agents/SKILL.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/test-driven-development/SKILL.md → ~/.claude/skills/test-driven-development/SKILL.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/verification-before-completion/SKILL.md → ~/.claude/skills/verification-before-completion/SKILL.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/systematic-debugging/SKILL.md → ~/.claude/skills/systematic-debugging/SKILL.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/requesting-code-review/SKILL.md → ~/.claude/skills/requesting-code-review/SKILL.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/receiving-code-review/SKILL.md → ~/.claude/skills/receiving-code-review/SKILL.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/finishing-a-development-branch/SKILL.md → ~/.claude/skills/finishing-a-development-branch/SKILL.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/using-git-worktrees/SKILL.md → ~/.claude/skills/using-git-worktrees/SKILL.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/writing-skills/SKILL.md → ~/.claude/skills/writing-skills/SKILL.md
 
 **Agents** (custom subagents):
-- https://raw.githubusercontent.com/jarrodwatts/claude-code-config/master/agents/codebase-search.md → ~/.claude/agents/codebase-search.md
-- https://raw.githubusercontent.com/jarrodwatts/claude-code-config/master/agents/media-interpreter.md → ~/.claude/agents/media-interpreter.md
-- https://raw.githubusercontent.com/jarrodwatts/claude-code-config/master/agents/open-source-librarian.md → ~/.claude/agents/open-source-librarian.md
-- https://raw.githubusercontent.com/jarrodwatts/claude-code-config/master/agents/tech-docs-writer.md → ~/.claude/agents/tech-docs-writer.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/codebase-search.md → ~/.claude/agents/codebase-search.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/media-interpreter.md → ~/.claude/agents/media-interpreter.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/open-source-librarian.md → ~/.claude/agents/open-source-librarian.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/agents/tech-docs-writer.md → ~/.claude/agents/tech-docs-writer.md
 
 **Commands** (slash commands):
-- https://raw.githubusercontent.com/jarrodwatts/claude-code-config/master/commands/interview.md → ~/.claude/commands/interview.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/interview.md → ~/.claude/commands/interview.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/superpowers/brainstorm.md → ~/.claude/commands/superpowers/brainstorm.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/superpowers/write-plan.md → ~/.claude/commands/superpowers/write-plan.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/superpowers/execute-plan.md → ~/.claude/commands/superpowers/execute-plan.md
 
 **Hooks** (event-triggered scripts):
-- https://raw.githubusercontent.com/jarrodwatts/claude-code-config/master/hooks/keyword-detector.py → ~/.claude/hooks/keyword-detector.py
-- https://raw.githubusercontent.com/jarrodwatts/claude-code-config/master/hooks/check-comments.py → ~/.claude/hooks/check-comments.py
-- https://raw.githubusercontent.com/jarrodwatts/claude-code-config/master/hooks/todo-enforcer.sh → ~/.claude/hooks/todo-enforcer.sh
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/hooks/keyword-detector.py → ~/.claude/hooks/keyword-detector.py
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/hooks/check-comments.py → ~/.claude/hooks/check-comments.py
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/hooks/todo-enforcer.sh → ~/.claude/hooks/todo-enforcer.sh
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/hooks/superpowers/require-green-tests.sh → ~/.claude/hooks/superpowers/require-green-tests.sh
+
+**Hook wiring (`~/.claude/settings.json`)**
+Add or merge this snippet so the hooks actually run:
+```json
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      { "hooks": [{ "type": "command", "command": "./hooks/keyword-detector.py" }] }
+    ],
+    "PostToolUse": [
+      { "matcher": "Write|Edit", "hooks": [{ "type": "command", "command": "./hooks/check-comments.py" }] }
+    ],
+    "Stop": [
+      { "hooks": [{ "type": "command", "command": "./hooks/superpowers/require-green-tests.sh" }] },
+      { "hooks": [{ "type": "command", "command": "./hooks/todo-enforcer.sh" }] }
+    ]
+  }
+}
+```
+Set `SUPERPOWERS_TEST_CMD` to override the test command used by the Stop gate.
 
 **Global Instructions**:
-- https://raw.githubusercontent.com/jarrodwatts/claude-code-config/master/CLAUDE.md → ~/.claude/CLAUDE.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/CLAUDE.md → ~/.claude/CLAUDE.md
 
 **CRITICAL: Do NOT overwrite existing files.**
 
@@ -64,10 +102,10 @@ Create directories as needed, fetch files with curl, and make hook scripts execu
 | Component | Files | Description |
 |-----------|-------|-------------|
 | Rules | 4 | TypeScript, testing, comments, Foundry conventions |
-| Skills | 2 | Planning-with-files (Manus-style workflow), React useEffect best practices |
+| Skills | 16 | Planning-with-files, React useEffect, plus the Superpowers workflow pack (brainstorm → plan → execute → TDD/verification → review → finish, worktrees, writing-skills) |
 | Agents | 4 | Codebase search, media interpreter, OSS librarian, docs writer |
-| Commands | 1 | Interview (spec fleshing) |
-| Hooks | 3 | Keyword detector, comment checker, todo enforcer |
+| Commands | 4 | Interview, Superpowers brainstorm, write-plan, execute-plan |
+| Hooks | 4 | Keyword detector, comment checker, todo enforcer, require-green-tests Stop gate |
 | CLAUDE.md | 1 | Global instructions and workflow preferences |
 
 ## After Installation

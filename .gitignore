@@ -13,6 +13,8 @@
 !agents/**
 !commands/
 !commands/**
+!docs/
+!docs/**
 
 # Exclude runtime/generated files from hooks
 hooks/*.log
