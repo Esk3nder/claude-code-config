@@ -4,17 +4,34 @@ my personal claude code configuration - mostly not created by me, but sourced fr
 
 ## Installation
 
-### Option 1: Copy-Paste into Claude Code (No Git Required)
+### Option 1: Install Script (Recommended)
+
+```bash
+git clone https://github.com/Esk3nder/claude-code-config.git /tmp/claude-config
+cd /tmp/claude-config
+./install.sh
+```
+
+The script will:
+- Check dependencies (jq, python3)
+- Copy all components to `~/.claude/`
+- Merge hook wiring into `settings.json`
+- Make hooks executable
+
+Use `./install.sh --force` to overwrite without prompting.
+
+### Option 2: Copy-Paste into Claude Code (No Git Required)
 
 Copy the prompt from [INSTALL.md](INSTALL.md) and paste it into Claude Code. Claude will fetch and install all config files automatically.
 
-### Option 2: Git Clone
+### Option 3: Git Clone (Direct)
 
 ```bash
 git clone https://github.com/Esk3nder/claude-code-config.git ~/.claude
+cp ~/.claude/settings.json.example ~/.claude/settings.json
 ```
 
-### Option 3: Selective Install
+### Option 4: Selective Install
 
 ```bash
 # Clone elsewhere first
