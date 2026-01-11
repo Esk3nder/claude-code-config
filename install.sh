@@ -15,6 +15,9 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+# Flags
+FORCE=false
+
 log_info() { echo -e "${BLUE}[INFO]${NC} $1"; }
 log_success() { echo -e "${GREEN}[OK]${NC} $1"; }
 log_warn() { echo -e "${YELLOW}[WARN]${NC} $1"; }
@@ -25,10 +28,67 @@ INSTALLED=0
 SKIPPED=0
 FAILED=0
 
+# Parse command line arguments
+parse_args() {
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --force|-f)
+                FORCE=true
+                shift
+                ;;
+            --help|-h)
+                echo "Usage: $0 [OPTIONS]"
+                echo ""
+                echo "Options:"
+                echo "  --force, -f    Overwrite existing files without prompting"
+                echo "  --help, -h     Show this help message"
+                exit 0
+                ;;
+            *)
+                log_error "Unknown option: $1"
+                exit 1
+                ;;
+        esac
+    done
+}
+
+# Check dependencies
+check_dependencies() {
+    local missing=()
+
+    if ! command -v jq &>/dev/null; then
+        missing+=("jq (required for settings.json merge)")
+    fi
+
+    if ! command -v python3 &>/dev/null; then
+        missing+=("python3 (required for hooks)")
+    fi
+
+    if [[ ${#missing[@]} -gt 0 ]]; then
+        log_warn "Missing optional dependencies:"
+        for dep in "${missing[@]}"; do
+            echo "  - $dep"
+        done
+        echo ""
+        log_info "Install them for full functionality, or press Enter to continue anyway."
+        read -rp "Continue? [Y/n]: " response
+        if [[ "$response" =~ ^[Nn] ]]; then
+            log_error "Installation aborted."
+            exit 1
+        fi
+    fi
+}
+
 # Prompt for user action when file exists
 # Returns: "skip", "overwrite", or "merge"
 prompt_action() {
     local dest="$1"
+
+    if [[ "$FORCE" == true ]]; then
+        echo "overwrite"
+        return
+    fi
+
     echo ""
     log_warn "File already exists: $dest"
     echo "  [s] Skip - keep existing file"
@@ -99,7 +159,7 @@ install_dir() {
     done
 }
 
-# Merge settings.json hooks
+# Merge settings.json hooks using jq
 merge_settings() {
     local settings_file="$CLAUDE_DIR/settings.json"
     local example_file="$SCRIPT_DIR/settings.json.example"
@@ -109,15 +169,81 @@ merge_settings() {
         return 0
     fi
 
-    if [[ -f "$settings_file" ]]; then
-        log_info "Existing settings.json found"
-        log_warn "Please manually merge hooks from settings.json.example"
-        log_info "Example hooks configuration:"
-        cat "$example_file"
-        echo ""
-    else
+    if [[ ! -f "$settings_file" ]]; then
+        # No existing settings, just copy
         cp "$example_file" "$settings_file"
         log_success "Created: $settings_file"
+        ((INSTALLED++))
+        return 0
+    fi
+
+    # Existing settings.json found - attempt merge
+    if ! command -v jq &>/dev/null; then
+        log_warn "jq not installed - cannot merge settings.json"
+        log_info "Please manually merge hooks from settings.json.example"
+        cat "$example_file"
+        echo ""
+        return 0
+    fi
+
+    # Check if existing settings already has hooks
+    if jq -e '.hooks' "$settings_file" &>/dev/null; then
+        if [[ "$FORCE" == true ]]; then
+            # Force mode: replace hooks entirely
+            local merged
+            merged=$(jq -s '.[0] * .[1]' "$settings_file" "$example_file")
+            echo "$merged" > "$settings_file"
+            log_success "Merged hooks into: $settings_file"
+            ((INSTALLED++))
+        else
+            log_warn "Existing settings.json already has hooks configured"
+            echo ""
+            echo "Options:"
+            echo "  [s] Skip - keep existing hooks unchanged"
+            echo "  [m] Merge - combine hooks (may create duplicates)"
+            echo "  [r] Replace - overwrite hooks with new version"
+            echo ""
+            read -rp "Choice [s/m/r]: " choice
+            case "$choice" in
+                m|M)
+                    # Deep merge: combine hook arrays
+                    local merged
+                    merged=$(jq -s '
+                        .[0] as $existing |
+                        .[1] as $new |
+                        $existing * {
+                            hooks: (
+                                ($existing.hooks // {}) as $eh |
+                                ($new.hooks // {}) as $nh |
+                                ($eh | keys) + ($nh | keys) | unique |
+                                map(. as $k | {($k): (($eh[$k] // []) + ($nh[$k] // []))}) |
+                                add
+                            )
+                        }
+                    ' "$settings_file" "$example_file")
+                    echo "$merged" > "$settings_file"
+                    log_success "Merged hooks into: $settings_file"
+                    ((INSTALLED++))
+                    ;;
+                r|R)
+                    local merged
+                    merged=$(jq -s '.[0] * .[1]' "$settings_file" "$example_file")
+                    echo "$merged" > "$settings_file"
+                    log_success "Replaced hooks in: $settings_file"
+                    ((INSTALLED++))
+                    ;;
+                *)
+                    log_info "Skipped: $settings_file"
+                    ((SKIPPED++))
+                    ;;
+            esac
+        fi
+    else
+        # No existing hooks - safe to add
+        local merged
+        merged=$(jq -s '.[0] * .[1]' "$settings_file" "$example_file")
+        echo "$merged" > "$settings_file"
+        log_success "Added hooks to: $settings_file"
         ((INSTALLED++))
     fi
 }
@@ -132,6 +258,8 @@ make_hooks_executable() {
 }
 
 main() {
+    parse_args "$@"
+
     echo ""
     echo "=========================================="
     echo "  Claude Code Config Installer"
@@ -139,7 +267,13 @@ main() {
     echo ""
     log_info "Source: $SCRIPT_DIR"
     log_info "Destination: $CLAUDE_DIR"
+    if [[ "$FORCE" == true ]]; then
+        log_info "Mode: Force (overwrite without prompting)"
+    fi
     echo ""
+
+    # Check dependencies
+    check_dependencies
 
     # Create base directory
     mkdir -p "$CLAUDE_DIR"
