@@ -30,8 +30,9 @@ Rules:
 - Error routing: failing tests → test-driven-development; lint/typecheck failures → verification-before-completion; exceptions/tool/CI errors → systematic-debugging; plan gaps/unclear next step → writing-plans then executing-plans; design uncertainty → brainstorming. After resolution, return to executing-plans and continue.
 - Reviews: `/workflows/review` always runs a Codex adversarial pass first, then native review agents; if security/perf hotspots are touched, run a focused Codex spotlight.
 - Debugging: `systematic-debugging` includes a Codex counter-review when hypotheses stall or the issue persists.
-- Model: Codex delegation uses the Codex CLI’s configured model (default GPT-5-Codex); switch with `/model` in Codex if needed.
-- Keyword hook: prompts containing "multiagent", "delegate", or "parallelize" inject delegation guidance (native subagents + Codex review handoff).
+- Model: Codex delegation uses the Codex CLI’s configured model (default `gpt-5.2-codex`); switch with `/model` in Codex if needed.
+- Keyword hook: prompts containing "multiagent", "delegate", "parallelize", "gpt", "codex", or "delegator" inject delegation guidance (native subagents + Codex review handoff).
+- claude-delegator: use `/claude-delegator/setup` to configure MCP and install custom expert prompts under `~/.claude/prompts/delegator/`.
 
 ## Commands (optional entry points)
 - `commands/workflows/brainstorm.md` → run brainstorming loop.
@@ -39,6 +40,9 @@ Rules:
 - `commands/workflows/work.md` → walk tasks, update plan, run checks.
 - `commands/workflows/review.md` → multi-agent review with TodoWrite findings.
 - `commands/workflows/compound.md` → capture solutions in `docs/solutions/`.
+- `commands/claude-delegator/setup.md` → configure Codex MCP + install delegator rules/prompts.
+- `commands/claude-delegator/uninstall.md` → remove Codex MCP config and delegator rules/prompts.
+- `commands/claude-delegator/task.md` → delegate a task to a Codex expert.
 
 ## Stop Hook: Require Green Tests
 - Hook script: `hooks/workflows/require-green-tests.sh` (wired in `settings.json`).

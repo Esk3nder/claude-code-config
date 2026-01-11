@@ -15,6 +15,10 @@
 !commands/**
 !docs/
 !docs/**
+!prompts/
+!prompts/**
+!config/
+!config/**
 
 # Exclude runtime/generated files from hooks
 hooks/*.log

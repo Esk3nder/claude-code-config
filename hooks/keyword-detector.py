@@ -39,7 +39,7 @@ Workflow:
 """
 
     # Delegation mode - native multiagent + Codex handoff
-    elif re.search(r'\b(multi[-\s]*agent|delegate|delegation|parallelize|parallelise|parallel|sub[-\s]*agent)\b', prompt):
+    elif re.search(r'\b(multi[-\s]*agent|delegate|delegation|parallelize|parallelise|parallel|sub[-\s]*agent|gpt|codex|delegator)\b', prompt):
         additional_context = """
 [DELEGATION MODE]
 
@@ -48,9 +48,10 @@ Prefer native workflows and built-in subagents; use Codex for adversarial review
 Guidance:
 1. If the user explicitly wants parallel work, use `dispatching-parallel-agents`.
 2. If the plan has >6 tasks or "parallel/agents/workstreams" is explicit, use `subagent-driven-development`.
-3. For reviews, ensure a Codex adversarial pass runs via `/claude-delegator:task`.
+3. For reviews, ensure a Codex adversarial pass runs via `/claude-delegator/task`.
 4. Keep scopes independent; avoid overlapping files.
 5. Write mini-briefs with goal, files, deliverable, verification, timebox.
+6. Codex expert prompts live under `~/.claude/prompts/delegator/` (see `config/delegator/experts.json`).
 
 Suggested entry points:
 - /workflows/plan <slug> (if plan needed)

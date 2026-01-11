@@ -1,0 +1,34 @@
+{
+  "experts": {
+    "architect": {
+      "prompt": "prompts/delegator/architect.md",
+      "native_review_agents": ["agents/review/architecture-strategist.md"],
+      "default_mode": "advisory",
+      "focus": ["system-design", "tradeoffs", "complex-debugging"]
+    },
+    "plan-reviewer": {
+      "prompt": "prompts/delegator/plan-reviewer.md",
+      "native_skills": ["skills/writing-plans/SKILL.md", "skills/planning-with-files/SKILL.md"],
+      "default_mode": "advisory",
+      "focus": ["plan-validation", "gaps", "verifiability"]
+    },
+    "scope-analyst": {
+      "prompt": "prompts/delegator/scope-analyst.md",
+      "native_command": "commands/interview.md",
+      "default_mode": "advisory",
+      "focus": ["requirements", "ambiguity", "risk"]
+    },
+    "code-reviewer": {
+      "prompt": "prompts/delegator/code-reviewer.md",
+      "native_review_agents": ["agents/review/code-simplicity.md", "agents/review/pattern-recognition.md"],
+      "default_mode": "advisory",
+      "focus": ["correctness", "security", "performance", "maintainability"]
+    },
+    "security-analyst": {
+      "prompt": "prompts/delegator/security-analyst.md",
+      "native_review_agents": ["agents/review/security-sentinel.md"],
+      "default_mode": "advisory",
+      "focus": ["auth", "data-exposure", "input-validation", "hardening"]
+    }
+  }
+}

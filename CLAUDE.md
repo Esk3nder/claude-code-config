@@ -189,6 +189,10 @@ STOP searching when:
 | Librarian | \`librarian\` | Unfamiliar packages / libraries, struggles at weird behaviour (to find existing implementation of opensource) |
 | Documentation | \`document-writer\` | README, API docs, guides |
 
+### Codex Expert Delegation (claude-delegator)
+
+Use `/claude-delegator/task` for high-stakes reviews and architecture decisions. Expert prompts live under `~/.claude/prompts/delegator/` and are mapped in `config/delegator/experts.json`.
+
 ### Delegation Prompt Structure (MANDATORY - ALL 7 sections):
 
 When delegating, your prompt MUST include:
