@@ -38,6 +38,26 @@ Workflow:
 - Mark todos complete only after verification
 """
 
+    # Delegation mode - native multiagent + Codex handoff
+    elif re.search(r'\b(multi[-\s]*agent|delegate|delegation|parallelize|parallelise|parallel|sub[-\s]*agent)\b', prompt):
+        additional_context = """
+[DELEGATION MODE]
+
+Prefer native workflows and built-in subagents; use Codex for adversarial review.
+
+Guidance:
+1. If the user explicitly wants parallel work, use `dispatching-parallel-agents`.
+2. If the plan has >6 tasks or "parallel/agents/workstreams" is explicit, use `subagent-driven-development`.
+3. For reviews, ensure a Codex adversarial pass runs via `/claude-delegator:task`.
+4. Keep scopes independent; avoid overlapping files.
+5. Write mini-briefs with goal, files, deliverable, verification, timebox.
+
+Suggested entry points:
+- /workflows/plan <slug> (if plan needed)
+- /workflows/work (execute tasks)
+- /workflows/review (Codex + native review agents)
+"""
+
     # Search mode - maximized search effort
     elif re.search(r'\b(search|find|locate|where\s+is)\b', prompt):
         additional_context = """
@@ -117,4 +137,3 @@ Before acting:
 
 if __name__ == "__main__":
     main()
-

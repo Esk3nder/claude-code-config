@@ -28,6 +28,10 @@ Rules:
 - writing-plans must write to `plans/{slug}.md`; planning-with-files owns persistence/updates to the same file and `notes.md`.
 - Tight descriptions reduce accidental triggers; model invocation stays enabled.
 - Error routing: failing tests → test-driven-development; lint/typecheck failures → verification-before-completion; exceptions/tool/CI errors → systematic-debugging; plan gaps/unclear next step → writing-plans then executing-plans; design uncertainty → brainstorming. After resolution, return to executing-plans and continue.
+- Reviews: `/workflows/review` always runs a Codex adversarial pass first, then native review agents; if security/perf hotspots are touched, run a focused Codex spotlight.
+- Debugging: `systematic-debugging` includes a Codex counter-review when hypotheses stall or the issue persists.
+- Model: Codex delegation uses the Codex CLI’s configured model (default GPT-5-Codex); switch with `/model` in Codex if needed.
+- Keyword hook: prompts containing "multiagent", "delegate", or "parallelize" inject delegation guidance (native subagents + Codex review handoff).
 
 ## Commands (optional entry points)
 - `commands/workflows/brainstorm.md` → run brainstorming loop.

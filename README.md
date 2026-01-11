@@ -129,7 +129,7 @@ You don't need to memorize commands. Describe what you want naturally—skills a
 |--------------|----------------|
 | "Build a user dashboard" | `planning-with-files` → `/workflows/plan` |
 | "Fix this authentication bug" | `systematic-debugging` skill |
-| "Review my changes" | `/workflows/review` → review agents |
+| "Review my changes" | `/workflows/review` → Codex adversarial pass + review agents |
 | "I need to understand this codebase" | `codebase-search` agent |
 | "Write tests for this function" | `test-driven-development` skill |
 | "I'm done with this feature" | `finishing-a-development-branch` skill |
@@ -405,6 +405,7 @@ Typical task patterns and the components they use:
                      ▼                       ▼
               ┌──────────────────────────────────┐
               │  Parallel agent execution:       │
+              │  • Codex adversarial reviewer    │
               │  • typescript reviewer           │
               │  • security-sentinel             │
               │  • performance-oracle            │
@@ -418,7 +419,7 @@ Typical task patterns and the components they use:
 |------|------------|----------------|--------|
 | **New Feature** | `/interview` | plan → work → review → compound | `plans/*.md` + `docs/solutions/` |
 | **Bug Fix** | Describe bug | systematic-debugging → fix → review | Fixed code + tests |
-| **Code Review** | `/workflows/review` | 14 specialized review agents | Findings in TodoWrite |
+| **Code Review** | `/workflows/review` | Codex adversarial pass + review agents | Findings in TodoWrite |
 | **Refactor** | `/workflows/plan` | TDD skill → review agents | Verified changes |
 | **Understand Codebase** | "Explain X" | codebase-search agent | Explanation |
 | **Research Library** | "How does X work?" | open-source-librarian agent | Cited answer |
@@ -615,6 +616,10 @@ claude plugin install ralph-loop
 # claude-hud (status line)
 claude plugin marketplace add jarrodwatts/claude-hud
 claude plugin install claude-hud@claude-hud
+
+# Codex adversarial review (used by /workflows/review)
+claude plugin marketplace add jarrodwatts/claude-delegator
+claude plugin install claude-delegator@jarrodwatts/claude-delegator
 ```
 
 ## Contributing
