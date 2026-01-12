@@ -28,6 +28,9 @@ INSTALLED=0
 SKIPPED=0
 FAILED=0
 
+# Safe increment that doesn't fail with set -e when value is 0
+inc() { eval "$1=\$((\$1 + 1))"; }
+
 # Parse command line arguments
 parse_args() {
     while [[ $# -gt 0 ]]; do
@@ -52,6 +55,11 @@ parse_args() {
     done
 }
 
+# Check if running interactively
+is_interactive() {
+    [[ -t 0 && "$FORCE" != true ]]
+}
+
 # Check dependencies
 check_dependencies() {
     local missing=()
@@ -70,11 +78,15 @@ check_dependencies() {
             echo "  - $dep"
         done
         echo ""
-        log_info "Install them for full functionality, or press Enter to continue anyway."
-        read -rp "Continue? [Y/n]: " response
-        if [[ "$response" =~ ^[Nn] ]]; then
-            log_error "Installation aborted."
-            exit 1
+        if is_interactive; then
+            log_info "Install them for full functionality, or press Enter to continue anyway."
+            read -rp "Continue? [Y/n]: " response
+            if [[ "$response" =~ ^[Nn] ]]; then
+                log_error "Installation aborted."
+                exit 1
+            fi
+        else
+            log_info "Continuing without optional dependencies (non-interactive mode)."
         fi
     fi
 }
@@ -84,8 +96,13 @@ check_dependencies() {
 prompt_action() {
     local dest="$1"
 
-    if [[ "$FORCE" == true ]]; then
-        echo "overwrite"
+    if ! is_interactive; then
+        # Non-interactive: overwrite by default (--force), or skip otherwise
+        if [[ "$FORCE" == true ]]; then
+            echo "overwrite"
+        else
+            echo "skip"
+        fi
         return
     fi
 
@@ -118,26 +135,26 @@ install_file() {
         case "$action" in
             skip)
                 log_info "Skipped: $dest"
-                ((SKIPPED++))
+                inc SKIPPED
                 return 0
                 ;;
             overwrite)
                 cp "$src" "$dest"
                 log_success "Overwrote: $dest"
-                ((INSTALLED++))
+                inc INSTALLED
                 ;;
             merge)
                 # Create backup and copy new file
                 cp "$dest" "${dest}.backup"
                 cp "$src" "${dest}.new"
                 log_warn "Created ${dest}.new and ${dest}.backup - manual merge needed"
-                ((SKIPPED++))
+                inc SKIPPED
                 ;;
         esac
     else
         cp "$src" "$dest"
         log_success "Installed: $dest"
-        ((INSTALLED++))
+        inc INSTALLED
     fi
 }
 
@@ -152,11 +169,12 @@ install_dir() {
         return 1
     fi
 
-    find "$src_dir" -type f -name "$pattern" | while read -r src; do
+    # Use process substitution to avoid subshell (preserves variable updates)
+    while read -r src; do
         local relative="${src#$src_dir/}"
         local dest="$dest_dir/$relative"
         install_file "$src" "$dest"
-    done
+    done < <(find "$src_dir" -type f -name "$pattern")
 }
 
 # Merge settings.json hooks using jq
@@ -173,7 +191,7 @@ merge_settings() {
         # No existing settings, just copy
         cp "$example_file" "$settings_file"
         log_success "Created: $settings_file"
-        ((INSTALLED++))
+        inc INSTALLED
         return 0
     fi
 
@@ -188,13 +206,20 @@ merge_settings() {
 
     # Check if existing settings already has hooks
     if jq -e '.hooks' "$settings_file" &>/dev/null; then
-        if [[ "$FORCE" == true ]]; then
-            # Force mode: replace hooks entirely
-            local merged
-            merged=$(jq -s '.[0] * .[1]' "$settings_file" "$example_file")
-            echo "$merged" > "$settings_file"
-            log_success "Merged hooks into: $settings_file"
-            ((INSTALLED++))
+        if ! is_interactive; then
+            # Non-interactive mode
+            if [[ "$FORCE" == true ]]; then
+                # Force mode: replace hooks entirely
+                local merged
+                merged=$(jq -s '.[0] * .[1]' "$settings_file" "$example_file")
+                echo "$merged" > "$settings_file"
+                log_success "Merged hooks into: $settings_file"
+                inc INSTALLED
+            else
+                # Non-interactive without force: skip to be safe
+                log_info "Skipped (existing hooks, non-interactive): $settings_file"
+                inc SKIPPED
+            fi
         else
             log_warn "Existing settings.json already has hooks configured"
             echo ""
@@ -223,18 +248,18 @@ merge_settings() {
                     ' "$settings_file" "$example_file")
                     echo "$merged" > "$settings_file"
                     log_success "Merged hooks into: $settings_file"
-                    ((INSTALLED++))
+                    inc INSTALLED
                     ;;
                 r|R)
                     local merged
                     merged=$(jq -s '.[0] * .[1]' "$settings_file" "$example_file")
                     echo "$merged" > "$settings_file"
                     log_success "Replaced hooks in: $settings_file"
-                    ((INSTALLED++))
+                    inc INSTALLED
                     ;;
                 *)
                     log_info "Skipped: $settings_file"
-                    ((SKIPPED++))
+                    inc SKIPPED
                     ;;
             esac
         fi
@@ -244,7 +269,7 @@ merge_settings() {
         merged=$(jq -s '.[0] * .[1]' "$settings_file" "$example_file")
         echo "$merged" > "$settings_file"
         log_success "Added hooks to: $settings_file"
-        ((INSTALLED++))
+        inc INSTALLED
     fi
 }
 
@@ -292,17 +317,17 @@ migrate_skills() {
             # Old exists, new doesn't - just remove old (new will be installed)
             rm -rf "$old_path"
             log_info "Removed legacy skill: $old_name"
-            ((migrated++))
+            inc migrated
         elif [[ -d "$old_path" && -d "$new_path" ]]; then
             # Both exist - remove old, keep new
             rm -rf "$old_path"
             log_info "Cleaned up duplicate: $old_name"
-            ((migrated++))
+            inc migrated
         elif [[ -d "$old_path" ]]; then
             # Old exists - remove it
             rm -rf "$old_path"
             log_info "Removed legacy skill: $old_name"
-            ((migrated++))
+            inc migrated
         fi
     done
 
