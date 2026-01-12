@@ -1,0 +1,626 @@
+{
+  "meta": {
+    "version": "1.0",
+    "generated": "2026-01-11",
+    "pass": 1,
+    "repo": "claude-code-config/san-juan"
+  },
+  "nodes": [
+    {
+      "id": "entry:user-prompt",
+      "type": "entry",
+      "label": "User Prompt",
+      "evidence": "Claude Code runtime"
+    },
+    {
+      "id": "entry:slash-command",
+      "type": "entry",
+      "label": "Slash Command",
+      "evidence": "Claude Code /command syntax"
+    },
+    {
+      "id": "entry:tool-use",
+      "type": "entry",
+      "label": "Tool Invocation",
+      "evidence": "Claude Code tool calls"
+    },
+    {
+      "id": "entry:session-stop",
+      "type": "entry",
+      "label": "Session Stop",
+      "evidence": "User exit or task complete"
+    },
+    {
+      "id": "hook:keyword-detector",
+      "type": "hook",
+      "label": "keyword-detector.py",
+      "event": "UserPromptSubmit",
+      "blocking": false,
+      "evidence": "hooks/keyword-detector.py"
+    },
+    {
+      "id": "hook:check-comments",
+      "type": "hook",
+      "label": "check-comments.py",
+      "event": "PostToolUse",
+      "matcher": "Write|Edit",
+      "blocking": false,
+      "evidence": "hooks/check-comments.py"
+    },
+    {
+      "id": "hook:require-green-tests",
+      "type": "hook",
+      "label": "require-green-tests.sh",
+      "event": "Stop",
+      "blocking": true,
+      "evidence": "hooks/workflows/require-green-tests.sh"
+    },
+    {
+      "id": "hook:todo-enforcer",
+      "type": "hook",
+      "label": "todo-enforcer.sh",
+      "event": "Stop",
+      "blocking": true,
+      "evidence": "hooks/todo-enforcer.sh"
+    },
+    {
+      "id": "cmd:interview",
+      "type": "command",
+      "label": "/interview",
+      "allowedTools": ["AskUserQuestion", "Read", "Glob", "Grep", "Write", "Edit"],
+      "evidence": "commands/interview.md"
+    },
+    {
+      "id": "cmd:workflows-brainstorm",
+      "type": "command",
+      "label": "/workflows/brainstorm",
+      "allowedTools": ["AskUserQuestion", "Read", "Glob", "Grep"],
+      "evidence": "commands/workflows/brainstorm.md"
+    },
+    {
+      "id": "cmd:workflows-plan",
+      "type": "command",
+      "label": "/workflows/plan",
+      "allowedTools": ["Read", "Glob", "Grep", "Write", "Edit"],
+      "evidence": "commands/workflows/plan.md"
+    },
+    {
+      "id": "cmd:workflows-work",
+      "type": "command",
+      "label": "/workflows/work",
+      "allowedTools": ["Read", "Glob", "Grep", "Write", "Edit", "Bash"],
+      "evidence": "commands/workflows/work.md"
+    },
+    {
+      "id": "cmd:workflows-review",
+      "type": "command",
+      "label": "/workflows/review",
+      "allowedTools": ["Read", "Glob", "Grep", "Bash", "TodoWrite"],
+      "evidence": "commands/workflows/review.md"
+    },
+    {
+      "id": "cmd:workflows-compound",
+      "type": "command",
+      "label": "/workflows/compound",
+      "allowedTools": ["Read", "Glob", "Grep", "Write", "Edit"],
+      "evidence": "commands/workflows/compound.md"
+    },
+    {
+      "id": "cmd:delegator-setup",
+      "type": "command",
+      "label": "/claude-delegator/setup",
+      "evidence": "commands/claude-delegator/setup.md"
+    },
+    {
+      "id": "cmd:delegator-task",
+      "type": "command",
+      "label": "/claude-delegator/task",
+      "allowedTools": ["Read", "AskUserQuestion", "Bash", "mcp__codex__codex"],
+      "evidence": "commands/claude-delegator/task.md"
+    },
+    {
+      "id": "cmd:delegator-uninstall",
+      "type": "command",
+      "label": "/claude-delegator/uninstall",
+      "evidence": "commands/claude-delegator/uninstall.md"
+    },
+    {
+      "id": "skill:planning-with-files",
+      "type": "skill",
+      "label": "planning-with-files",
+      "evidence": "skills/planning-with-files/SKILL.md"
+    },
+    {
+      "id": "skill:brainstorming",
+      "type": "skill",
+      "label": "brainstorming",
+      "evidence": "skills/brainstorming/SKILL.md"
+    },
+    {
+      "id": "skill:writing-plans",
+      "type": "skill",
+      "label": "writing-plans",
+      "evidence": "skills/writing-plans/SKILL.md"
+    },
+    {
+      "id": "skill:executing-plans",
+      "type": "skill",
+      "label": "executing-plans",
+      "evidence": "skills/executing-plans/SKILL.md"
+    },
+    {
+      "id": "skill:test-driven-development",
+      "type": "skill",
+      "label": "test-driven-development",
+      "evidence": "skills/test-driven-development/SKILL.md"
+    },
+    {
+      "id": "skill:systematic-debugging",
+      "type": "skill",
+      "label": "systematic-debugging",
+      "evidence": "skills/systematic-debugging/SKILL.md"
+    },
+    {
+      "id": "skill:verification-before-completion",
+      "type": "skill",
+      "label": "verification-before-completion",
+      "evidence": "skills/verification-before-completion/SKILL.md"
+    },
+    {
+      "id": "skill:subagent-driven-development",
+      "type": "skill",
+      "label": "subagent-driven-development",
+      "evidence": "skills/subagent-driven-development/SKILL.md"
+    },
+    {
+      "id": "skill:dispatching-parallel-agents",
+      "type": "skill",
+      "label": "dispatching-parallel-agents",
+      "evidence": "skills/dispatching-parallel-agents/SKILL.md"
+    },
+    {
+      "id": "skill:requesting-code-review",
+      "type": "skill",
+      "label": "requesting-code-review",
+      "evidence": "skills/requesting-code-review/SKILL.md"
+    },
+    {
+      "id": "skill:receiving-code-review",
+      "type": "skill",
+      "label": "receiving-code-review",
+      "evidence": "skills/receiving-code-review/SKILL.md"
+    },
+    {
+      "id": "skill:finishing-a-development-branch",
+      "type": "skill",
+      "label": "finishing-a-development-branch",
+      "evidence": "skills/finishing-a-development-branch/SKILL.md"
+    },
+    {
+      "id": "skill:using-git-worktrees",
+      "type": "skill",
+      "label": "using-git-worktrees",
+      "evidence": "skills/using-git-worktrees/SKILL.md"
+    },
+    {
+      "id": "skill:using-workflows",
+      "type": "skill",
+      "label": "using-workflows",
+      "evidence": "skills/using-workflows/SKILL.md"
+    },
+    {
+      "id": "skill:writing-skills",
+      "type": "skill",
+      "label": "writing-skills",
+      "evidence": "skills/writing-skills/SKILL.md"
+    },
+    {
+      "id": "skill:react-useeffect",
+      "type": "skill",
+      "label": "react-useeffect",
+      "evidence": "skills/react-useeffect/SKILL.md"
+    },
+    {
+      "id": "agent:codebase-search",
+      "type": "agent",
+      "label": "codebase-search",
+      "model": "haiku",
+      "evidence": "agents/codebase-search.md"
+    },
+    {
+      "id": "agent:open-source-librarian",
+      "type": "agent",
+      "label": "open-source-librarian",
+      "model": "sonnet",
+      "evidence": "agents/open-source-librarian.md"
+    },
+    {
+      "id": "agent:oracle",
+      "type": "agent",
+      "label": "oracle",
+      "model": "opus",
+      "evidence": "agents/oracle.md"
+    },
+    {
+      "id": "agent:tech-docs-writer",
+      "type": "agent",
+      "label": "tech-docs-writer",
+      "model": "sonnet",
+      "evidence": "agents/tech-docs-writer.md"
+    },
+    {
+      "id": "agent:media-interpreter",
+      "type": "agent",
+      "label": "media-interpreter",
+      "model": "sonnet",
+      "evidence": "agents/media-interpreter.md"
+    },
+    {
+      "id": "agent:review-security-sentinel",
+      "type": "agent",
+      "label": "security-sentinel",
+      "model": "haiku",
+      "evidence": "agents/review/security-sentinel.md"
+    },
+    {
+      "id": "agent:review-performance-oracle",
+      "type": "agent",
+      "label": "performance-oracle",
+      "model": "sonnet",
+      "evidence": "agents/review/performance-oracle.md"
+    },
+    {
+      "id": "agent:review-architecture-strategist",
+      "type": "agent",
+      "label": "architecture-strategist",
+      "model": "sonnet",
+      "evidence": "agents/review/architecture-strategist.md"
+    },
+    {
+      "id": "agent:review-data-migration-expert",
+      "type": "agent",
+      "label": "data-migration-expert",
+      "model": "sonnet",
+      "evidence": "agents/review/data-migration-expert.md"
+    },
+    {
+      "id": "agent:review-deployment-verification",
+      "type": "agent",
+      "label": "deployment-verification",
+      "model": "sonnet",
+      "evidence": "agents/review/deployment-verification.md"
+    },
+    {
+      "id": "agent:review-code-simplicity",
+      "type": "agent",
+      "label": "code-simplicity",
+      "model": "haiku",
+      "evidence": "agents/review/code-simplicity.md"
+    },
+    {
+      "id": "agent:review-data-integrity-guardian",
+      "type": "agent",
+      "label": "data-integrity-guardian",
+      "model": "sonnet",
+      "evidence": "agents/review/data-integrity-guardian.md"
+    },
+    {
+      "id": "agent:review-pattern-recognition",
+      "type": "agent",
+      "label": "pattern-recognition",
+      "model": "sonnet",
+      "evidence": "agents/review/pattern-recognition.md"
+    },
+    {
+      "id": "agent:review-agent-native",
+      "type": "agent",
+      "label": "agent-native",
+      "model": "sonnet",
+      "evidence": "agents/review/agent-native.md"
+    },
+    {
+      "id": "agent:review-typescript",
+      "type": "agent",
+      "label": "typescript",
+      "model": "haiku",
+      "evidence": "agents/review/typescript.md"
+    },
+    {
+      "id": "agent:review-rails",
+      "type": "agent",
+      "label": "rails",
+      "model": "haiku",
+      "evidence": "agents/review/rails.md"
+    },
+    {
+      "id": "agent:review-python",
+      "type": "agent",
+      "label": "python",
+      "model": "haiku",
+      "evidence": "agents/review/python.md"
+    },
+    {
+      "id": "agent:review-dhh-rails",
+      "type": "agent",
+      "label": "dhh-rails",
+      "model": "sonnet",
+      "evidence": "agents/review/dhh-rails.md"
+    },
+    {
+      "id": "agent:review-frontend-races",
+      "type": "agent",
+      "label": "frontend-races",
+      "model": "sonnet",
+      "evidence": "agents/review/frontend-races.md"
+    },
+    {
+      "id": "expert:architect",
+      "type": "expert",
+      "label": "architect",
+      "mode": "advisory",
+      "evidence": "prompts/delegator/architect.md"
+    },
+    {
+      "id": "expert:plan-reviewer",
+      "type": "expert",
+      "label": "plan-reviewer",
+      "mode": "advisory",
+      "evidence": "prompts/delegator/plan-reviewer.md"
+    },
+    {
+      "id": "expert:scope-analyst",
+      "type": "expert",
+      "label": "scope-analyst",
+      "mode": "advisory",
+      "evidence": "prompts/delegator/scope-analyst.md"
+    },
+    {
+      "id": "expert:code-reviewer",
+      "type": "expert",
+      "label": "code-reviewer",
+      "mode": "advisory",
+      "evidence": "prompts/delegator/code-reviewer.md"
+    },
+    {
+      "id": "expert:security-analyst",
+      "type": "expert",
+      "label": "security-analyst",
+      "mode": "advisory",
+      "evidence": "prompts/delegator/security-analyst.md"
+    },
+    {
+      "id": "rule:typescript",
+      "type": "rule",
+      "label": "typescript.md",
+      "scope": "**/*.{ts,tsx}",
+      "evidence": "rules/typescript.md"
+    },
+    {
+      "id": "rule:testing",
+      "type": "rule",
+      "label": "testing.md",
+      "scope": "**/*.{test,spec}.ts",
+      "evidence": "rules/testing.md"
+    },
+    {
+      "id": "rule:comments",
+      "type": "rule",
+      "label": "comments.md",
+      "scope": "all",
+      "evidence": "rules/comments.md"
+    },
+    {
+      "id": "rule:forge",
+      "type": "rule",
+      "label": "forge.md",
+      "scope": "**/*.sol",
+      "evidence": "rules/forge.md"
+    },
+    {
+      "id": "rule:delegator-orchestration",
+      "type": "rule",
+      "label": "delegator/orchestration.md",
+      "evidence": "rules/delegator/orchestration.md"
+    },
+    {
+      "id": "rule:delegator-triggers",
+      "type": "rule",
+      "label": "delegator/triggers.md",
+      "evidence": "rules/delegator/triggers.md"
+    },
+    {
+      "id": "rule:delegator-model-selection",
+      "type": "rule",
+      "label": "delegator/model-selection.md",
+      "evidence": "rules/delegator/model-selection.md"
+    },
+    {
+      "id": "rule:delegator-delegation-format",
+      "type": "rule",
+      "label": "delegator/delegation-format.md",
+      "evidence": "rules/delegator/delegation-format.md"
+    }
+  ],
+  "edges": [
+    {
+      "from": "entry:user-prompt",
+      "to": "hook:keyword-detector",
+      "condition": "always",
+      "evidence": "settings.json.example:UserPromptSubmit"
+    },
+    {
+      "from": "entry:slash-command",
+      "to": "cmd:interview",
+      "condition": "/interview",
+      "evidence": "Claude Code command routing"
+    },
+    {
+      "from": "entry:slash-command",
+      "to": "cmd:workflows-brainstorm",
+      "condition": "/workflows/brainstorm",
+      "evidence": "Claude Code command routing"
+    },
+    {
+      "from": "entry:slash-command",
+      "to": "cmd:workflows-plan",
+      "condition": "/workflows/plan",
+      "evidence": "Claude Code command routing"
+    },
+    {
+      "from": "entry:slash-command",
+      "to": "cmd:workflows-work",
+      "condition": "/workflows/work",
+      "evidence": "Claude Code command routing"
+    },
+    {
+      "from": "entry:slash-command",
+      "to": "cmd:workflows-review",
+      "condition": "/workflows/review",
+      "evidence": "Claude Code command routing"
+    },
+    {
+      "from": "entry:slash-command",
+      "to": "cmd:workflows-compound",
+      "condition": "/workflows/compound",
+      "evidence": "Claude Code command routing"
+    },
+    {
+      "from": "entry:slash-command",
+      "to": "cmd:delegator-setup",
+      "condition": "/claude-delegator/setup",
+      "evidence": "Claude Code command routing"
+    },
+    {
+      "from": "entry:slash-command",
+      "to": "cmd:delegator-task",
+      "condition": "/claude-delegator/task",
+      "evidence": "Claude Code command routing"
+    },
+    {
+      "from": "entry:slash-command",
+      "to": "cmd:delegator-uninstall",
+      "condition": "/claude-delegator/uninstall",
+      "evidence": "Claude Code command routing"
+    },
+    {
+      "from": "entry:tool-use",
+      "to": "hook:check-comments",
+      "condition": "Write|Edit",
+      "evidence": "settings.json.example:PostToolUse"
+    },
+    {
+      "from": "entry:session-stop",
+      "to": "hook:require-green-tests",
+      "condition": "always",
+      "evidence": "settings.json.example:Stop"
+    },
+    {
+      "from": "entry:session-stop",
+      "to": "hook:todo-enforcer",
+      "condition": "always",
+      "evidence": "settings.json.example:Stop"
+    },
+    {
+      "from": "hook:keyword-detector",
+      "to": "skill:subagent-driven-development",
+      "condition": "ultrawork|delegate|delegator",
+      "evidence": "hooks/keyword-detector.py:22-60"
+    },
+    {
+      "from": "hook:keyword-detector",
+      "to": "agent:codebase-search",
+      "condition": "search|find|locate",
+      "evidence": "hooks/keyword-detector.py:61-80"
+    },
+    {
+      "from": "hook:keyword-detector",
+      "to": "agent:oracle",
+      "condition": "analyze|investigate|debug",
+      "evidence": "hooks/keyword-detector.py:81-100"
+    },
+    {
+      "from": "cmd:workflows-review",
+      "to": "agent:review-security-sentinel",
+      "condition": "parallel dispatch",
+      "evidence": "commands/workflows/review.md"
+    },
+    {
+      "from": "cmd:workflows-review",
+      "to": "agent:review-performance-oracle",
+      "condition": "parallel dispatch",
+      "evidence": "commands/workflows/review.md"
+    },
+    {
+      "from": "cmd:workflows-review",
+      "to": "agent:review-architecture-strategist",
+      "condition": "parallel dispatch",
+      "evidence": "commands/workflows/review.md"
+    },
+    {
+      "from": "cmd:workflows-review",
+      "to": "agent:review-code-simplicity",
+      "condition": "parallel dispatch",
+      "evidence": "commands/workflows/review.md"
+    },
+    {
+      "from": "cmd:workflows-review",
+      "to": "agent:review-pattern-recognition",
+      "condition": "parallel dispatch",
+      "evidence": "commands/workflows/review.md"
+    },
+    {
+      "from": "cmd:workflows-review",
+      "to": "expert:code-reviewer",
+      "condition": "Codex adversarial pass",
+      "evidence": "commands/workflows/review.md"
+    },
+    {
+      "from": "cmd:delegator-task",
+      "to": "expert:architect",
+      "condition": "architecture|tradeoffs|design",
+      "evidence": "rules/delegator/triggers.md"
+    },
+    {
+      "from": "cmd:delegator-task",
+      "to": "expert:plan-reviewer",
+      "condition": "review plan",
+      "evidence": "rules/delegator/triggers.md"
+    },
+    {
+      "from": "cmd:delegator-task",
+      "to": "expert:scope-analyst",
+      "condition": "ambiguous|scope",
+      "evidence": "rules/delegator/triggers.md"
+    },
+    {
+      "from": "cmd:delegator-task",
+      "to": "expert:code-reviewer",
+      "condition": "review code",
+      "evidence": "rules/delegator/triggers.md"
+    },
+    {
+      "from": "cmd:delegator-task",
+      "to": "expert:security-analyst",
+      "condition": "security review",
+      "evidence": "rules/delegator/triggers.md"
+    },
+    {
+      "from": "cmd:workflows-plan",
+      "to": "skill:writing-plans",
+      "condition": "command invocation",
+      "evidence": "skills/writing-plans/SKILL.md"
+    },
+    {
+      "from": "cmd:workflows-brainstorm",
+      "to": "skill:brainstorming",
+      "condition": "command invocation",
+      "evidence": "skills/brainstorming/SKILL.md"
+    },
+    {
+      "from": "cmd:workflows-work",
+      "to": "skill:executing-plans",
+      "condition": "command invocation",
+      "evidence": "skills/executing-plans/SKILL.md"
+    }
+  ]
+}
