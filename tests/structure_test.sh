@@ -72,12 +72,12 @@ AGENT_COUNT=$(find "$REPO_ROOT/agents" -name "*.md" ! -name "index.md" 2>/dev/nu
 HOOK_COUNT=$(find "$REPO_ROOT/hooks" -type f \( -name "*.py" -o -name "*.sh" \) 2>/dev/null | wc -l | tr -d ' ')
 RULE_COUNT=$(find "$REPO_ROOT/rules" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
 
-echo "Skills: $SKILL_COUNT (expected 18)"
+echo "Skills: $SKILL_COUNT (expected 17)"
 echo "Agents: $AGENT_COUNT (expected 19)"
 echo "Hooks: $HOOK_COUNT (expected 5)"
 echo "Rules: $RULE_COUNT (expected 8)"
 
-[[ "$SKILL_COUNT" -eq 18 ]] || { echo "FAIL: Skills count $SKILL_COUNT != 18"; ((FAILURES++)); }
+[[ "$SKILL_COUNT" -eq 17 ]] || { echo "FAIL: Skills count $SKILL_COUNT != 17"; ((FAILURES++)); }
 [[ "$AGENT_COUNT" -eq 19 ]] || { echo "FAIL: Agents count $AGENT_COUNT != 19"; ((FAILURES++)); }
 [[ "$HOOK_COUNT" -eq 5 ]] || { echo "FAIL: Hooks count $HOOK_COUNT != 5"; ((FAILURES++)); }
 [[ "$RULE_COUNT" -eq 8 ]] || { echo "FAIL: Rules count $RULE_COUNT != 8"; ((FAILURES++)); }

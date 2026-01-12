@@ -268,7 +268,7 @@ migrate_skills() {
         ["dispatching-parallel-agents"]="DispatchingParallelAgents"
         ["executing-plans"]="ExecutingPlans"
         ["finishing-a-development-branch"]="FinishingDevelopmentBranch"
-        ["planning-with-files"]="PlanningWithFiles"
+        ["managing-plans"]="ManagingPlans"
         ["react-useeffect"]="ReactUseEffect"
         ["receiving-code-review"]="ReceivingCodeReview"
         ["requesting-code-review"]="RequestingCodeReview"
@@ -279,7 +279,6 @@ migrate_skills() {
         ["using-git-worktrees"]="UsingGitWorktrees"
         ["using-workflows"]="UsingWorkflows"
         ["verification-before-completion"]="VerificationBeforeCompletion"
-        ["writing-plans"]="WritingPlans"
         ["writing-skills"]="WritingSkills"
     )
 

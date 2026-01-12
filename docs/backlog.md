@@ -5,8 +5,8 @@
 **Goal:** Reduce repo complexity by ~1,700 lines while improving clarity and maintainability.
 
 ### P0 - Critical
-- [ ] Merge `WritingPlans` + `PlanningWithFiles` into single `ManagingPlans` skill
-- [ ] Remove duplicate task management section from CLAUDE.md (~60 lines) - reference skill instead
+- [x] Merge `WritingPlans` + `PlanningWithFiles` into single `ManagingPlans` skill
+- [x] ~~Remove duplicate task management section from CLAUDE.md~~ - NOT DUPLICATE: Task_Management is about TodoWrite tool, ManagingPlans is about plan files
 
 ### P1 - High
 - [ ] Consolidate `rules/delegator/` from 4 files to 2 (merge orchestration+triggers+model-selection into `delegation-guide.md`)

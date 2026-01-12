@@ -18,12 +18,12 @@ Route to the correct workflow skill deterministically.
 Before any non-trivial reply:
 1. Pause and scan: does this map to brainstorming, planning, executing, debugging, testing, review, or finishing?
 2. Route to highest-priority matching skill:
-   - Brainstorming → WritingPlans → PlanningWithFiles → ExecutingPlans → SystematicDebugging → TestDrivenDevelopment → VerificationBeforeCompletion → Review → FinishingDevelopmentBranch
+   - Brainstorming → ManagingPlans → ExecutingPlans → SystematicDebugging → TestDrivenDevelopment → VerificationBeforeCompletion → Review → FinishingDevelopmentBranch
 3. On errors/failures, auto-route:
    - Test failure → `TestDrivenDevelopment`
    - Lint/type failure → `VerificationBeforeCompletion`
    - Exception/tool failure → `SystematicDebugging`
-   - Plan drift → `WritingPlans` then `ExecutingPlans`
+   - Plan drift → `ManagingPlans` then `ExecutingPlans`
 4. If none apply, state why and proceed minimally.
 
 Always note which skill you're following to keep routing deterministic.
@@ -34,7 +34,7 @@ Always note which skill you're following to keep routing deterministic.
 ```
 User: "Help me with this feature"
 → Invokes UsingWorkflows
-→ Routes to Brainstorming or WritingPlans based on clarity
+→ Routes to Brainstorming or ManagingPlans based on clarity
 ```
 
 **Example 2: Error encountered**

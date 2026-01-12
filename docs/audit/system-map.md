@@ -93,13 +93,12 @@ This document provides a comprehensive inventory of the Claude Code configuratio
 
 ---
 
-## Skills (18 total)
+## Skills (17 total)
 
 | ID | Label | Directory | Trigger Pattern |
 |----|-------|-----------|-----------------|
-| skill:planning-with-files | PlanningWithFiles | skills/PlanningWithFiles | complex tasks, multi-step projects |
+| skill:managing-plans | ManagingPlans | skills/ManagingPlans | create and maintain persistent plans |
 | skill:brainstorming | Brainstorming | skills/Brainstorming | generate options, constraints, risks |
-| skill:writing-plans | WritingPlans | skills/WritingPlans | produce verifiable task plan |
 | skill:executing-plans | ExecutingPlans | skills/ExecutingPlans | iterate tasks, keep plan in sync |
 | skill:test-driven-development | TestDrivenDevelopment | skills/TestDrivenDevelopment | RED/GREEN/REFACTOR cycle |
 | skill:systematic-debugging | SystematicDebugging | skills/SystematicDebugging | exceptions, failing commands, CI errors |
