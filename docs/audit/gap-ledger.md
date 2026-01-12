@@ -8,7 +8,8 @@
 |----------|-------|-------------|
 | P0 | 0 | Critical: security vulnerability |
 | P1 | 1 | High: TOCTOU race in test cache |
-| P2 | 5 | Medium: Info disclosure, robustness, maintenance, UX |
+| P2 | 11 | Medium: Info disclosure, robustness, maintenance, UX, routing |
+| P3 | 1 | Low: Security footgun (Codex bypass) |
 
 ## P0 - Critical Issues
 
@@ -123,6 +124,56 @@
 - **Minimal Fix**: Add spinner or progress output
 - **Verification**: Run with slow test suite, observe output
 
+## Routing Gaps (Pass 1)
+
+### GAP-015: Review Agent Dispatch is All-or-Nothing
+- **Type**: Routing gap
+- **Severity**: P2
+- **Evidence**: /workflows/review dispatches all review agents in parallel
+- **Impact**: Slow/redundant reviews for simple changes; no filtering by file type
+- **Minimal Fix**: Add file-type filtering or user-selectable agent subset
+- **Verification**: Review dispatch logic in commands/workflows/review.md
+
+### GAP-016: No Explicit Routing for Incremental Work
+- **Type**: Routing gap
+- **Severity**: P2
+- **Evidence**: No "resume plan" or "continue from task N" command
+- **Impact**: If session drops mid-task, user must manually re-invoke /workflows/work
+- **Minimal Fix**: Add /workflows/resume command or plan state persistence
+- **Verification**: Test session recovery after interruption
+
+### GAP-017: Inconsistent Tool Allowlists Across Commands
+- **Type**: Routing gap
+- **Severity**: P2
+- **Evidence**: Commands have different tool sets; no unified policy
+- **Impact**: Confusion about what's possible per command
+- **Minimal Fix**: Document tool policy per command; consider unified base set
+- **Verification**: Review coverage-matrix.md Command → Allowed Tools Matrix
+
+### GAP-018: Unbounded Debug Logging
+- **Type**: Reliability gap
+- **Severity**: P2
+- **Evidence**: hooks/check-comments.py appends to ~/.claude/hooks/debug.log indefinitely
+- **Impact**: Log file can grow without bound, consuming disk space
+- **Minimal Fix**: Add log rotation or size limit
+- **Verification**: Check log file size after extended use
+
+### GAP-019: No Documentation of Hook Ordering Guarantees
+- **Type**: Documentation gap
+- **Severity**: P2
+- **Evidence**: Stop hooks run in parallel but ordering not documented
+- **Impact**: Users may assume sequential execution
+- **Minimal Fix**: Document parallel execution in system-map.md
+- **Verification**: Verify settings.json.example comments
+
+### GAP-020: Codex MCP Tool Bypass
+- **Type**: Security footgun
+- **Severity**: P3
+- **Evidence**: mcp__codex__codex is callable directly, bypassing 7-section prompt structure
+- **Impact**: Users can delegate with arbitrary prompts, inconsistent with delegation-format.md
+- **Minimal Fix**: Document intended usage; consider wrapper validation
+- **Verification**: Review commands/claude-delegator/task.md enforcement
+
 ## Gap Matrix
 
 | Gap ID | Type | Severity | Fix Complexity | Automated Verification |
@@ -139,3 +190,9 @@
 | GAP-010 | Maintenance | P2 | Medium | Yes |
 | GAP-013 | UX | P2 | Low | Manual |
 | GAP-014 | UX | P2 | Low | Manual |
+| GAP-015 | Routing | P2 | Medium | Manual |
+| GAP-016 | Routing | P2 | Medium | Manual |
+| GAP-017 | Routing | P2 | Low | Manual |
+| GAP-018 | Reliability | P2 | Low | Yes |
+| GAP-019 | Documentation | P2 | Low | Manual |
+| GAP-020 | Security | P3 | Low | Manual |
