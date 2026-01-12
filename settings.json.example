@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "./hooks/keyword-detector.py"
+            "command": "~/.claude/hooks/keyword-detector.py"
           }
         ]
       }
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "./hooks/parallel-dispatch-guide.py"
+            "command": "~/.claude/hooks/parallel-dispatch-guide.py"
           }
         ]
       }
@@ -27,7 +27,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "./hooks/check-comments.py"
+            "command": "~/.claude/hooks/check-comments.py"
           }
         ]
       }
@@ -37,7 +37,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "./hooks/workflows/require-green-tests.sh"
+            "command": "~/.claude/hooks/workflows/require-green-tests.sh"
           }
         ]
       },
@@ -45,7 +45,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "./hooks/todo-enforcer.sh"
+            "command": "~/.claude/hooks/todo-enforcer.sh"
           }
         ]
       }

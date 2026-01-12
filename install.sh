@@ -188,8 +188,8 @@ merge_settings() {
     fi
 
     if [[ ! -f "$settings_file" ]]; then
-        # No existing settings, just copy
-        cp "$example_file" "$settings_file"
+        # No existing settings - copy with path substitution
+        sed "s|~/.claude|$CLAUDE_DIR|g" "$example_file" > "$settings_file"
         log_success "Created: $settings_file"
         inc INSTALLED
         return 0
@@ -199,10 +199,16 @@ merge_settings() {
     if ! command -v jq &>/dev/null; then
         log_warn "jq not installed - cannot merge settings.json"
         log_info "Please manually merge hooks from settings.json.example"
-        cat "$example_file"
+        sed "s|~/.claude|$CLAUDE_DIR|g" "$example_file"
         echo ""
         return 0
     fi
+
+    # Create temp file with resolved paths for merging
+    local resolved_example
+    resolved_example=$(mktemp)
+    sed "s|~/.claude|$CLAUDE_DIR|g" "$example_file" > "$resolved_example"
+    trap "rm -f '$resolved_example'" RETURN
 
     # Check if existing settings already has hooks
     if jq -e '.hooks' "$settings_file" &>/dev/null; then
@@ -211,7 +217,7 @@ merge_settings() {
             if [[ "$FORCE" == true ]]; then
                 # Force mode: replace hooks entirely
                 local merged
-                merged=$(jq -s '.[0] * .[1]' "$settings_file" "$example_file")
+                merged=$(jq -s '.[0] * .[1]' "$settings_file" "$resolved_example")
                 echo "$merged" > "$settings_file"
                 log_success "Merged hooks into: $settings_file"
                 inc INSTALLED
@@ -245,14 +251,14 @@ merge_settings() {
                                 add
                             )
                         }
-                    ' "$settings_file" "$example_file")
+                    ' "$settings_file" "$resolved_example")
                     echo "$merged" > "$settings_file"
                     log_success "Merged hooks into: $settings_file"
                     inc INSTALLED
                     ;;
                 r|R)
                     local merged
-                    merged=$(jq -s '.[0] * .[1]' "$settings_file" "$example_file")
+                    merged=$(jq -s '.[0] * .[1]' "$settings_file" "$resolved_example")
                     echo "$merged" > "$settings_file"
                     log_success "Replaced hooks in: $settings_file"
                     inc INSTALLED
@@ -266,7 +272,7 @@ merge_settings() {
     else
         # No existing hooks - safe to add
         local merged
-        merged=$(jq -s '.[0] * .[1]' "$settings_file" "$example_file")
+        merged=$(jq -s '.[0] * .[1]' "$settings_file" "$resolved_example")
         echo "$merged" > "$settings_file"
         log_success "Added hooks to: $settings_file"
         inc INSTALLED

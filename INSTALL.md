@@ -106,14 +106,14 @@ Add or merge this snippet so the hooks actually run:
 {
   "hooks": {
     "UserPromptSubmit": [
-      { "hooks": [{ "type": "command", "command": "./hooks/keyword-detector.py" }] }
+      { "hooks": [{ "type": "command", "command": "~/.claude/hooks/keyword-detector.py" }] }
     ],
     "PostToolUse": [
-      { "matcher": "Write|Edit", "hooks": [{ "type": "command", "command": "./hooks/check-comments.py" }] }
+      { "matcher": "Write|Edit", "hooks": [{ "type": "command", "command": "~/.claude/hooks/check-comments.py" }] }
     ],
     "Stop": [
-      { "hooks": [{ "type": "command", "command": "./hooks/workflows/require-green-tests.sh" }] },
-      { "hooks": [{ "type": "command", "command": "./hooks/todo-enforcer.sh" }] }
+      { "hooks": [{ "type": "command", "command": "~/.claude/hooks/workflows/require-green-tests.sh" }] },
+      { "hooks": [{ "type": "command", "command": "~/.claude/hooks/todo-enforcer.sh" }] }
     ]
   }
 }
