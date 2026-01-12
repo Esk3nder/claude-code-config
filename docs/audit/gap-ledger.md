@@ -99,12 +99,9 @@
 - **Status**: Verified working as expected
 
 ### GAP-012: No Preflight Hook
-- **Type**: Feature gap
-- **Severity**: P2
-- **Evidence**: No PreToolUse hook type available
-- **Impact**: Cannot validate/intercept tool calls before execution
-- **Note**: This is a Claude Code platform limitation, not repo gap
-- **Status**: Not actionable in this repo
+- **Status**: RESOLVED
+- **Evidence**: PreToolUse hook implemented in `hooks/parallel-dispatch-guide.py`
+- **Resolution**: Claude Code DOES support PreToolUse hooks. Created auto-dispatch hook that intercepts Read/Grep/Glob/Bash and dispatches parallel agents when review/exploration context is detected.
 
 ## UX Gaps
 
