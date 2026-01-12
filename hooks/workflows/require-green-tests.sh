@@ -23,7 +23,12 @@ pick_test_cmd() {
   elif [[ -f "$REPO_ROOT/package-lock.json" || -f "$REPO_ROOT/npm-shrinkwrap.json" ]]; then
     echo "npm test"
   else
-    echo "npm test"
+    # No lock file found - check if package.json exists at all
+    if [[ -f "$REPO_ROOT/package.json" ]]; then
+      echo "npm test"
+    else
+      echo "skip"
+    fi
   fi
 }
 
@@ -38,6 +43,10 @@ newest_tracked_mtime() {
 }
 
 TEST_CMD=$(pick_test_cmd)
+if [[ "$TEST_CMD" == "skip" ]]; then
+  echo "Stop hook: no test infrastructure detected; skipping."
+  exit 0
+fi
 LATEST_MTIME=$(newest_tracked_mtime)
 PREV_STATUS=""; PREV_CMD=""; PREV_MTIME=0
 if [[ -f "$STATE_FILE" ]]; then
