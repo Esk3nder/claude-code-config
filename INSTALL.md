@@ -31,11 +31,10 @@ Fetch and install these files to ~/.claude/:
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/rules/delegator/delegation-format.md → ~/.claude/rules/delegator/delegation-format.md
 
 **Skills** (model-invoked capabilities):
-- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/PlanningWithFiles/SKILL.md → ~/.claude/skills/PlanningWithFiles/SKILL.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/ManagingPlans/SKILL.md → ~/.claude/skills/ManagingPlans/SKILL.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/ReactUseEffect/SKILL.md → ~/.claude/skills/ReactUseEffect/SKILL.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/UsingWorkflows/SKILL.md → ~/.claude/skills/UsingWorkflows/SKILL.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/Brainstorming/SKILL.md → ~/.claude/skills/Brainstorming/SKILL.md
-- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/WritingPlans/SKILL.md → ~/.claude/skills/WritingPlans/SKILL.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/ExecutingPlans/SKILL.md → ~/.claude/skills/ExecutingPlans/SKILL.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/SubagentDrivenDevelopment/SKILL.md → ~/.claude/skills/SubagentDrivenDevelopment/SKILL.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/skills/DispatchingParallelAgents/SKILL.md → ~/.claude/skills/DispatchingParallelAgents/SKILL.md
@@ -146,7 +145,7 @@ Create directories as needed, fetch files with curl, and make hook scripts execu
 | Component | Files | Description |
 |-----------|-------|-------------|
 | Rules | 8 | TypeScript/testing/comments/Foundry + delegator orchestration |
-| Skills | 18 | PlanningWithFiles, ReactUseEffect, plus the Workflows pack (Brainstorming → WritingPlans → ExecutingPlans → TDD/Verification → Review/Compound → FinishingDevelopmentBranch, UsingGitWorktrees, WritingSkills) |
+| Skills | 17 | ManagingPlans, ReactUseEffect, plus the Workflows pack (Brainstorming → ManagingPlans → ExecutingPlans → TDD/Verification → Review/Compound → FinishingDevelopmentBranch, UsingGitWorktrees, WritingSkills) |
 | Agents | 5 + 14 review | Codebase search, media interpreter, OSS librarian, oracle, docs writer + 14 code review specialists |
 | Prompts | 5 | Codex expert prompts (delegator) |
 | Commands | 9 | Interview, Workflows brainstorm/plan/work/review/compound, delegator setup/task/uninstall |

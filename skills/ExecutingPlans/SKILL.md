@@ -24,7 +24,7 @@ Loop per task:
 6. On errors, branch to matching skill:
    - Failing tests → `TestDrivenDevelopment`
    - Exceptions/tool errors → `SystematicDebugging`
-   - Missing clarity → `WritingPlans` or `Brainstorming`
+   - Missing clarity → `ManagingPlans` or `Brainstorming`
 
 At end: run verification block, summarize diffs, hand off to finishing skills.
 

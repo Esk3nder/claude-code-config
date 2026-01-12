@@ -22,7 +22,7 @@ Verify before claiming done.
 5. If any check fails, route to the right skill:
    - Tests → `TestDrivenDevelopment`
    - Exceptions/tool errors → `SystematicDebugging`
-   - Plan gaps → `WritingPlans`/`ExecutingPlans`
+   - Plan gaps → `ManagingPlans`/`ExecutingPlans`
 
 Do not claim completion until green or explicitly waived.
 
