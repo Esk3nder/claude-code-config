@@ -30,13 +30,13 @@ Create and maintain structured plans in `plans/{slug}.md`.
 - **Read before deciding** - refresh goals in attention window
 - **Update after each phase** - mark [x] and change status
 - **Capture research** in `notes.md` alongside plan
-- **Document solutions** in `docs/solutions/` when problems solved
+- **Document solutions** in `plans/solutions/` when problems solved
 
 ## The 3-File Pattern
 
 - `plans/{slug}.md` - Task plan with checkboxes
 - `notes.md` - Research and findings
-- `docs/solutions/` - Captured solutions
+- `plans/solutions/` - Captured solutions
 
 ## Examples
 

@@ -69,7 +69,7 @@
 
 | # | Skill | Test Scenario | Expected Behavior | Verify |
 |---|-------|---------------|-------------------|--------|
-| 16 | `compound` | "Document the fix we just made" (after solving a bug) | Creates `docs/solutions/<category>/<slug>.md` with problem/solution | File created with YAML frontmatter |
+| 16 | `compound` | "Document the fix we just made" (after solving a bug) | Creates `plans/solutions/<category>/<slug>.md` with problem/solution | File created with YAML frontmatter |
 | 17 | `review` | "Review this codebase for issues" | Spawns parallel review agents, synthesizes findings, creates TodoWrite items | Findings logged with P1/P2/P3 severity |
 
 ### Authoring
@@ -151,7 +151,7 @@
 | 3 | `/workflows/plan` | "/workflows/plan feature-x" | Creates plans/feature-x.md | Plan file created |
 | 4 | `/workflows/work` | "/workflows/work" (with existing plan) | Executes tasks, updates status | Status updates |
 | 5 | `/workflows/review` | "/workflows/review" | Multi-agent code review | Multiple reviewers run |
-| 6 | `/workflows/compound` | "/workflows/compound" | Captures solution in docs/solutions/ | Solution documented |
+| 6 | `/workflows/compound` | "/workflows/compound" | Captures solution in plans/solutions/ | Solution documented |
 
 ### Delegator Commands
 

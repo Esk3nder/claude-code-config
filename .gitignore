@@ -15,6 +15,8 @@
 !commands/**
 !docs/
 !docs/**
+!plans/
+!plans/**
 !prompts/
 !prompts/**
 !config/

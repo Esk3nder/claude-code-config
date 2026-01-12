@@ -14,7 +14,7 @@
 
 ### P2 - Medium
 - [ ] Consolidate review agents: merge `data-migration-expert` + `data-integrity-guardian` into `data-safety`
-- [ ] Archive old audit passes in `docs/audit/` - keep only latest snapshot
+- [ ] Archive old audit passes in `plans/audit/` - keep only latest snapshot
 - [ ] Split CLAUDE.md into modular files: `role.md`, `behavior.md`, `constraints.md`
 
 ### P3 - Low

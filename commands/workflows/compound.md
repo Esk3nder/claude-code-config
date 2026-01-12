@@ -1,13 +1,13 @@
 ---
 allowed-tools: Read, Glob, Grep, Write, Edit
 argument-hint: [context]
-description: Workflows compound: capture solved problems into docs/solutions for future reuse.
+description: Workflows compound: capture solved problems into plans/solutions for future reuse.
 ---
 
 You are invoking **workflows-compound**. Context: `$ARGUMENTS` (default: current task/plan).
 
 1) Identify the problem, root cause, fix, and verification steps.
-2) Choose a category and write to `docs/solutions/<category>/<slug>.md` (create dirs as needed).
+2) Choose a category and write to `plans/solutions/<category>/<slug>.md` (create dirs as needed).
 3) Include YAML frontmatter: title, date, tags, related_plans.
 4) Keep it concise and searchable; link to the relevant plan file.
 

@@ -162,7 +162,7 @@
       "id": "context:compound-mode",
       "type": "context",
       "label": "Compound Mode",
-      "note": "Suggests documenting solution in docs/solutions/",
+      "note": "Suggests documenting solution in plans/solutions/",
       "evidence": "hooks/keyword-detector.py:378-389"
     },
     {

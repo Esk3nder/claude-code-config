@@ -377,7 +377,7 @@ Commands provide structured workflows. Located in `.claude/commands/`.
 │  /workflows/review       Multi-agent code review                   │
 │       │                                                            │
 │       ▼                                                            │
-│  /workflows/compound     Capture solution in docs/solutions/       │
+│  /workflows/compound     Capture solution in plans/solutions/      │
 │                                                                    │
 └────────────────────────────────────────────────────────────────────┘
 ```
@@ -447,7 +447,7 @@ Typical task patterns and the components they use:
 
 | Task | Start With | Key Components | Output |
 |------|------------|----------------|--------|
-| **New Feature** | `/interview` | plan → work → review → compound | `plans/*.md` + `docs/solutions/` |
+| **New Feature** | `/interview` | plan → work → review → compound | `plans/*.md` + `plans/solutions/` |
 | **Bug Fix** | Describe bug | systematic-debugging → fix → review | Fixed code + tests |
 | **Code Review** | `/workflows/review` | Codex adversarial pass + review agents | Findings in TodoWrite |
 | **Refactor** | `/workflows/plan` | TDD skill → review agents | Verified changes |
@@ -486,7 +486,7 @@ This config enforces a **Plan → Code → Verify** methodology:
   └────────────┘                └────────────┘              └────────────┘
 
   Output:                        Output:                     Output:
-  plans/{slug}.md                Updated plan file           docs/solutions/
+  plans/{slug}.md                Updated plan file           plans/solutions/
   with verifiable tasks          with [x] completed          reusable patterns
 ```
 
@@ -589,10 +589,37 @@ claude-code-config/
 │       ├── providers.json
 │       └── experts.json
 │
-└── docs/                     # Documentation
+├── plans/                    # Planning & design documents
+│   ├── README.md             # Plans directory guide
+│   ├── backlog.md            # Work backlog
+│   ├── YYYYMMDD-*.md         # Active work plans
+│   ├── audit/                # Analysis & audits
+│   └── solutions/            # Captured solutions (Compound workflow)
+│
+└── docs/                     # User documentation
+    ├── README.md             # Documentation index
+    ├── capability-test-plan.md
     ├── workflows-integration.md
     └── delegator-integration.md
 ```
+
+### plans/ vs docs/
+
+Understanding the distinction:
+
+| Directory | Purpose | Contents | Committed? |
+|-----------|---------|----------|------------|
+| **`plans/`** | **How we're building** the system | Design decisions, work plans, architecture, backlogs, audits | ✅ Yes |
+| **`docs/`** | **How to USE** the system | User guides, setup instructions, API docs, tutorials | ✅ Yes |
+
+**Examples**:
+- ✅ `plans/20260112-output-format-standardization.md` - Planning how to implement standardization
+- ✅ `plans/backlog.md` - What we're working on next
+- ✅ `plans/audit/claims-ledger.md` - Analysis of what features exist
+- ✅ `docs/capability-test-plan.md` - Guide for users to test the config
+- ✅ `docs/delegator-integration.md` - Instructions for setting up Codex integration
+
+**Rule of thumb**: If it's **for the team building** the config → `plans/`. If it's **for users** of the config → `docs/`.
 
 ## Installation
 

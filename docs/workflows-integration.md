@@ -39,7 +39,7 @@ Rules:
 - `commands/workflows/plan.md` → create/update `plans/{slug}.md` with verification.
 - `commands/workflows/work.md` → walk tasks, update plan, run checks.
 - `commands/workflows/review.md` → multi-agent review with TodoWrite findings.
-- `commands/workflows/compound.md` → capture solutions in `docs/solutions/`.
+- `commands/workflows/compound.md` → capture solutions in `plans/solutions/`.
 - `commands/claude-delegator/setup.md` → configure Codex MCP + install delegator rules/prompts.
 - `commands/claude-delegator/uninstall.md` → remove Codex MCP config and delegator rules/prompts.
 - `commands/claude-delegator/task.md` → delegate a task to a Codex expert.

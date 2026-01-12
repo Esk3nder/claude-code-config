@@ -32,10 +32,10 @@ Document solved problems to build searchable institutional knowledge.
 
 1. Detect confirmation phrase or `/workflows/compound` command
 2. Gather context: symptom, investigation attempts, root cause, solution, prevention
-3. Check existing docs: `grep -r "error phrase" docs/solutions/`
+3. Check existing docs: `grep -r "error phrase" plans/solutions/`
 4. Generate filename: `[sanitized-symptom]-[YYYYMMDD].md`
 5. Validate category (build-errors, test-failures, performance-issues, etc.)
-6. Create documentation in `docs/solutions/[category]/`
+6. Create documentation in `plans/solutions/[category]/`
 7. Cross-reference if similar issues found
 
 ## Examples
@@ -44,7 +44,7 @@ Document solved problems to build searchable institutional knowledge.
 ```
 User: "That worked! The N+1 query is fixed."
 → Invokes Compound
-→ Creates docs/solutions/performance-issues/n-plus-one-fix-20260112.md
+→ Creates plans/solutions/performance-issues/n-plus-one-fix-20260112.md
 → Includes root cause and prevention
 ```
 

@@ -386,7 +386,7 @@ CONTEXT_COMPOUND = """
 
 Success detected! Capture this solution for future reuse:
 
-Consider documenting in docs/solutions/:
+Consider documenting in plans/solutions/:
 - What problem was solved
 - What approach worked
 - Key insights or gotchas
