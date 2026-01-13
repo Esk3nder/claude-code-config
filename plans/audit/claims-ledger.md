@@ -13,27 +13,28 @@
 
 ## Component Count Claims
 
-### Claim 1: "Skills (16)"
+### Claim 1: "Skills (17)"
 - **Source**: README.md, INSTALL.md table
 - **Outcome**: TRUE
-- **Evidence**: `find skills -name "SKILL.md" | wc -l` returns 16
+- **Evidence**: `find skills -name "SKILL.md" | wc -l` returns 17
 - **Files**:
-  - skills/planning-with-files/SKILL.md
-  - skills/react-useeffect/SKILL.md
-  - skills/using-workflows/SKILL.md
-  - skills/brainstorming/SKILL.md
-  - skills/writing-plans/SKILL.md
-  - skills/executing-plans/SKILL.md
-  - skills/subagent-driven-development/SKILL.md
-  - skills/dispatching-parallel-agents/SKILL.md
-  - skills/test-driven-development/SKILL.md
-  - skills/verification-before-completion/SKILL.md
-  - skills/systematic-debugging/SKILL.md
-  - skills/requesting-code-review/SKILL.md
-  - skills/receiving-code-review/SKILL.md
-  - skills/finishing-a-development-branch/SKILL.md
-  - skills/using-git-worktrees/SKILL.md
-  - skills/writing-skills/SKILL.md
+  - skills/Brainstorming/SKILL.md
+  - skills/Compound/SKILL.md
+  - skills/DispatchingParallelAgents/SKILL.md
+  - skills/ExecutingPlans/SKILL.md
+  - skills/FinishingDevelopmentBranch/SKILL.md
+  - skills/ManagingPlans/SKILL.md
+  - skills/ReactUseEffect/SKILL.md
+  - skills/ReceivingCodeReview/SKILL.md
+  - skills/RequestingCodeReview/SKILL.md
+  - skills/Review/SKILL.md
+  - skills/SubagentDrivenDevelopment/SKILL.md
+  - skills/SystematicDebugging/SKILL.md
+  - skills/TestDrivenDevelopment/SKILL.md
+  - skills/UsingGitWorktrees/SKILL.md
+  - skills/UsingWorkflows/SKILL.md
+  - skills/VerificationBeforeCompletion/SKILL.md
+  - skills/WritingSkills/SKILL.md
 
 ### Claim 2: "Agents (19)" / "5 + 14 review specialists"
 - **Source**: README.md, INSTALL.md table
@@ -60,13 +61,14 @@
   - agents/review/security-sentinel.md
   - agents/review/typescript.md
 
-### Claim 3: "Hooks (4)"
+### Claim 3: "Hooks (5)"
 - **Source**: README.md, INSTALL.md table
 - **Outcome**: TRUE
-- **Evidence**: 4 hook scripts exist
+- **Evidence**: 5 hook scripts exist
 - **Files**:
   - hooks/keyword-detector.py
   - hooks/check-comments.py
+  - hooks/parallel-dispatch-guide.py
   - hooks/todo-enforcer.sh
   - hooks/workflows/require-green-tests.sh
 
@@ -84,10 +86,10 @@
   - rules/delegator/model-selection.md
   - rules/delegator/delegation-format.md
 
-### Claim 5: "Commands (9)"
+### Claim 5: "Commands (10)"
 - **Source**: README.md, INSTALL.md table
 - **Outcome**: TRUE
-- **Evidence**: 1 root + 5 workflows + 3 delegator = 9
+- **Evidence**: 1 root + 6 workflows + 3 delegator = 10
 - **Files**:
   - commands/interview.md
   - commands/workflows/brainstorm.md
@@ -95,6 +97,7 @@
   - commands/workflows/work.md
   - commands/workflows/review.md
   - commands/workflows/compound.md
+  - commands/workflows/resume.md
   - commands/claude-delegator/setup.md
   - commands/claude-delegator/task.md
   - commands/claude-delegator/uninstall.md

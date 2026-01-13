@@ -3,9 +3,9 @@
 A curated collection of skills, agents, rules, hooks, and workflows for Claude Code—transforming it from a coding assistant into a structured software development environment.
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
-![Skills](https://img.shields.io/badge/Skills-16-green)
+![Skills](https://img.shields.io/badge/Skills-17-green)
 ![Agents](https://img.shields.io/badge/Agents-19-orange)
-![Hooks](https://img.shields.io/badge/Hooks-4-purple)
+![Hooks](https://img.shields.io/badge/Hooks-5-purple)
 ![Rules](https://img.shields.io/badge/Rules-8-yellow)
 
 ## Table of Contents
@@ -158,7 +158,7 @@ After installing, try these to explore:
 │                                                                     │
 │  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐             │
 │  │   Skills    │    │   Agents    │    │    Rules    │             │
-│  │    (16)     │───▶│     (19)    │◀───│     (8)     │             │
+│  │    (17)     │───▶│     (19)    │◀───│     (8)     │             │
 │  └─────────────┘    └─────────────┘    └─────────────┘             │
 │         │                  │                  │                     │
 │         │                  │                  │                     │
@@ -171,7 +171,7 @@ After installing, try these to explore:
 │         ▼                  ▼                  ▼                     │
 │  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐             │
 │  │    Hooks    │    │  Commands   │    │   Plans     │             │
-│  │     (4)     │    │     (9)     │    │  (files)    │             │
+│  │     (5)     │    │    (10)     │    │  (files)    │             │
 │  └─────────────┘    └─────────────┘    └─────────────┘             │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
@@ -244,26 +244,27 @@ Skills are model-invoked capabilities that inject domain knowledge and enforce p
 
 ```
 ┌────────────────────────────────────────────────────────────────────┐
-│                         SKILLS (16)                                │
+│                         SKILLS (17)                                │
 ├────────────────────────────────────────────────────────────────────┤
 │                                                                    │
 │  PLANNING & STRUCTURE          DEVELOPMENT PATTERNS                │
-│  ├── planning-with-files       ├── test-driven-development        │
-│  ├── writing-plans             ├── systematic-debugging           │
-│  ├── executing-plans           ├── subagent-driven-development    │
-│  └── brainstorming             └── dispatching-parallel-agents    │
+│  ├── ManagingPlans             ├── TestDrivenDevelopment          │
+│  ├── ExecutingPlans            ├── SystematicDebugging            │
+│  └── Brainstorming             ├── SubagentDrivenDevelopment      │
+│                                └── DispatchingParallelAgents       │
 │                                                                    │
 │  CODE REVIEW                   GIT & WORKFLOW                      │
-│  ├── requesting-code-review    ├── finishing-a-development-branch │
-│  └── receiving-code-review     ├── using-git-worktrees            │
-│                                └── using-workflows                 │
+│  ├── RequestingCodeReview      ├── FinishingDevelopmentBranch     │
+│  ├── ReceivingCodeReview       ├── UsingGitWorktrees              │
+│  ├── Review                    └── UsingWorkflows                  │
+│  └── Compound                                                      │
 │                                                                    │
 │  QUALITY & VERIFICATION        AUTHORING                           │
-│  └── verification-before-      └── writing-skills                  │
-│      completion                                                    │
+│  └── VerificationBefore-       └── WritingSkills                   │
+│      Completion                                                    │
 │                                                                    │
 │  FRAMEWORK-SPECIFIC                                                │
-│  └── react-useeffect                                               │
+│  └── ReactUseEffect                                                │
 │                                                                    │
 └────────────────────────────────────────────────────────────────────┘
 ```
@@ -351,6 +352,7 @@ Hooks are scripts triggered by Claude Code events. Located in `.claude/hooks/`.
 |------|-------|---------|
 | `keyword-detector.py` | UserPromptSubmit | Detect keywords, suggest skills |
 | `check-comments.py` | PostToolUse (Write/Edit) | Validate comment policy |
+| `parallel-dispatch-guide.py` | PostToolUse (Task) | Guide parallel agent dispatch |
 | `todo-enforcer.sh` | Stop | Ensure todos are tracked |
 | `require-green-tests.sh` | Stop | Block finish unless tests pass |
 
@@ -360,7 +362,7 @@ Commands provide structured workflows. Located in `.claude/commands/`.
 
 ```
 ┌────────────────────────────────────────────────────────────────────┐
-│                      WORKFLOW COMMANDS                             │
+│                      WORKFLOW COMMANDS (10)                        │
 ├────────────────────────────────────────────────────────────────────┤
 │                                                                    │
 │  /interview          Interactive planning and spec fleshing        │
@@ -378,6 +380,8 @@ Commands provide structured workflows. Located in `.claude/commands/`.
 │       │                                                            │
 │       ▼                                                            │
 │  /workflows/compound     Capture solution in plans/solutions/      │
+│                                                                    │
+│  /workflows/resume       Resume interrupted work from plan file    │
 │                                                                    │
 └────────────────────────────────────────────────────────────────────┘
 ```
@@ -520,16 +524,25 @@ claude-code-config/
 ├── INSTALL.md                # Copy-paste install prompt
 ├── install.sh                # Installation script
 │
-├── skills/                   # Model-invoked capabilities (16)
-│   ├── planning-with-files/
-│   │   ├── SKILL.md          # Skill definition
-│   │   ├── examples.md       # Usage examples
-│   │   └── reference.md      # API reference
-│   ├── test-driven-development/
-│   ├── verification-before-completion/
-│   ├── systematic-debugging/
-│   ├── react-useeffect/
-│   └── ...
+├── skills/                   # Model-invoked capabilities (17)
+│   ├── ManagingPlans/
+│   │   └── SKILL.md          # Skill definition
+│   ├── Brainstorming/
+│   ├── Compound/
+│   ├── DispatchingParallelAgents/
+│   ├── ExecutingPlans/
+│   ├── FinishingDevelopmentBranch/
+│   ├── ReactUseEffect/
+│   ├── ReceivingCodeReview/
+│   ├── RequestingCodeReview/
+│   ├── Review/
+│   ├── SubagentDrivenDevelopment/
+│   ├── SystematicDebugging/
+│   ├── TestDrivenDevelopment/
+│   ├── UsingGitWorktrees/
+│   ├── UsingWorkflows/
+│   ├── VerificationBeforeCompletion/
+│   └── WritingSkills/
 │
 ├── agents/                   # Specialized subagents (19)
 │   ├── codebase-search.md
@@ -563,21 +576,23 @@ claude-code-config/
 │       ├── code-reviewer.md
 │       └── security-analyst.md
 │
-├── hooks/                    # Event-triggered scripts (4)
+├── hooks/                    # Event-triggered scripts (5)
 │   ├── keyword-detector.py   # UserPromptSubmit
-│   ├── check-comments.py     # PostToolUse
+│   ├── check-comments.py     # PostToolUse (Write/Edit)
+│   ├── parallel-dispatch-guide.py  # PostToolUse (Task)
 │   ├── todo-enforcer.sh      # Stop
 │   └── workflows/
 │       └── require-green-tests.sh  # Stop
 │
-├── commands/                 # Slash commands (9)
+├── commands/                 # Slash commands (10)
 │   ├── interview.md          # /interview
 │   ├── workflows/
-│       ├── brainstorm.md     # /workflows/brainstorm
-│       ├── plan.md           # /workflows/plan
-│       ├── work.md           # /workflows/work
-│       ├── review.md         # /workflows/review
-│       └── compound.md       # /workflows/compound
+│   │   ├── brainstorm.md     # /workflows/brainstorm
+│   │   ├── plan.md           # /workflows/plan
+│   │   ├── work.md           # /workflows/work
+│   │   ├── review.md         # /workflows/review
+│   │   ├── compound.md       # /workflows/compound
+│   │   └── resume.md         # /workflows/resume
 │   └── claude-delegator/
 │       ├── setup.md          # /claude-delegator/setup
 │       ├── task.md           # /claude-delegator/task
