@@ -92,6 +92,8 @@ PATTERNS_SKILLS = {
     "brainstorm": r"\b(brainstorm|options|approaches|alternatives|design\s+decision|trade.?offs?|pros\s+and\s+cons)\b",
     # verification-before-completion: completion signals
     "verification": r"\b(done|finished|completed|ready\s+to\s+(ship|merge|deploy))\b",
+    # executing-plans: resume/continue patterns
+    "resume": r"\b(continue|resume|pick\s+up|where\s+we\s+left|carry\s+on|proceed)\b",
 }
 
 
@@ -160,11 +162,23 @@ def write_context_flags(prompt: str) -> None:
         "debugging_context": bool(
             re.search(PATTERNS_SKILLS["debugging"], prompt_lower, re.I)
         ),
+        "tdd_context": bool(
+            re.search(PATTERNS_SKILLS["tdd"], prompt_lower, re.I)
+        ),
+        "planning_context": bool(
+            re.search(PATTERNS_SKILLS["planning"], prompt_lower, re.I)
+        ),
         "compound_context": bool(
             re.search(PATTERNS_SKILLS["compound"], prompt_lower, re.I)
         ),
         "brainstorm_context": bool(
             re.search(PATTERNS_SKILLS["brainstorm"], prompt_lower, re.I)
+        ),
+        "verification_context": bool(
+            re.search(PATTERNS_SKILLS["verification"], prompt_lower, re.I)
+        ),
+        "resume_context": bool(
+            re.search(PATTERNS_SKILLS["resume"], prompt_lower, re.I)
         ),
         # Timestamp for freshness check
         "timestamp": time.time(),
@@ -408,6 +422,72 @@ Design decision or unclear request detected. Use brainstorming skill:
 Ask clarifying questions if multiple interpretations exist with 2x+ effort difference.
 """
 
+CONTEXT_TDD = """
+[TEST-DRIVEN DEVELOPMENT MODE]
+
+Test request detected. Follow TDD workflow:
+
+1. **Red**: Write a failing test first
+2. **Green**: Write minimal code to pass
+3. **Refactor**: Improve with tests green
+
+Before writing implementation:
+- Identify test file location (match existing patterns)
+- Write test cases for main scenarios
+- Include edge cases
+
+Per skills/TestDrivenDevelopment/SKILL.md.
+"""
+
+CONTEXT_PLANNING = """
+[PLAN-DRIVEN MODE]
+
+Complex/multi-step task detected. Create a plan file BEFORE writing code:
+
+1. Create `plans/YYYYMMDD-{slug}.md` with:
+   - Goal (1 line)
+   - Constraints
+   - Tasks with checkboxes ([ ], [-], [x])
+   - Verification steps
+   - Notes section
+
+2. Execute via plan file iteration loop:
+   - Re-read plan before each task
+   - Mark [-] in progress
+   - Update immediately after completion
+   - Mark [x] with timestamp
+
+Per skills/ManagingPlans/SKILL.md.
+"""
+
+CONTEXT_VERIFICATION = """
+[VERIFICATION MODE]
+
+Completion signal detected. Before marking done, verify:
+
+1. **All tasks complete**: Check plan file shows all [x]
+2. **Diagnostics clean**: Run lsp_diagnostics on changed files
+3. **Tests pass**: Run project tests if applicable
+4. **Build succeeds**: Run build command if applicable
+
+DO NOT claim completion without evidence.
+
+Per skills/VerificationBeforeCompletion/SKILL.md.
+"""
+
+CONTEXT_RESUME = """
+[RESUME/CONTINUE MODE]
+
+Continuation request detected. Find and resume existing plan:
+
+1. Check `plans/` for incomplete plans (files with [ ] or [-] tasks)
+2. Read the plan file to refresh context
+3. Find first [-] (in-progress) or [ ] (pending) task
+4. Resume execution from there
+
+Per skills/ExecutingPlans/SKILL.md.
+"""
+
 
 # =============================================================================
 # MAIN
@@ -476,11 +556,23 @@ def main():
     elif re.search(PATTERNS_SKILLS["debugging"], prompt_lower, re.I):
         additional_context = CONTEXT_DEBUGGING
 
+    elif re.search(PATTERNS_SKILLS["tdd"], prompt_lower, re.I):
+        additional_context = CONTEXT_TDD
+
+    elif re.search(PATTERNS_SKILLS["planning"], prompt_lower, re.I):
+        additional_context = CONTEXT_PLANNING
+
     elif re.search(PATTERNS_SKILLS["compound"], prompt_lower, re.I):
         additional_context = CONTEXT_COMPOUND
 
     elif re.search(PATTERNS_SKILLS["brainstorm"], prompt_lower, re.I):
         additional_context = CONTEXT_BRAINSTORM
+
+    elif re.search(PATTERNS_SKILLS["verification"], prompt_lower, re.I):
+        additional_context = CONTEXT_VERIFICATION
+
+    elif re.search(PATTERNS_SKILLS["resume"], prompt_lower, re.I):
+        additional_context = CONTEXT_RESUME
 
     # Priority 8: Original patterns
     elif re.search(PATTERNS_MODE["search"], prompt_lower):
