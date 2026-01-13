@@ -35,14 +35,15 @@ claude-code-config/
 │       ├── rails.md
 │       ├── security-sentinel.md
 │       └── typescript.md
-├── commands/                 # Slash commands (9 files)
+├── commands/                 # Slash commands (10 files)
 │   ├── interview.md
 │   ├── workflows/
 │   │   ├── brainstorm.md
 │   │   ├── plan.md
 │   │   ├── work.md
 │   │   ├── review.md
-│   │   └── compound.md
+│   │   ├── compound.md
+│   │   └── resume.md
 │   └── claude-delegator/
 │       ├── setup.md
 │       ├── task.md
@@ -52,9 +53,10 @@ claude-code-config/
 │       ├── mcp-servers.example.json
 │       ├── providers.json
 │       └── experts.json
-├── hooks/                    # Event-triggered scripts (4 files)
+├── hooks/                    # Event-triggered scripts (5 files)
 │   ├── keyword-detector.py   # UserPromptSubmit hook
 │   ├── check-comments.py     # PostToolUse hook (Write|Edit)
+│   ├── parallel-dispatch-guide.py  # PostToolUse hook (Task)
 │   ├── todo-enforcer.sh      # Stop hook
 │   └── workflows/
 │       └── require-green-tests.sh  # Stop hook
@@ -78,34 +80,35 @@ claude-code-config/
 ├── tests/                    # Repo validation checks
 │   ├── schema_test.py
 │   └── structure_test.sh
-└── skills/                   # Model-invoked capabilities (16 directories)
-    ├── planning-with-files/
-    ├── react-useeffect/
-    ├── using-workflows/
-    ├── brainstorming/
-    ├── writing-plans/
-    ├── executing-plans/
-    ├── subagent-driven-development/
-    ├── dispatching-parallel-agents/
-    ├── test-driven-development/
-    ├── verification-before-completion/
-    ├── systematic-debugging/
-    ├── requesting-code-review/
-    ├── receiving-code-review/
-    ├── finishing-a-development-branch/
-    ├── using-git-worktrees/
-    └── writing-skills/
+└── skills/                   # Model-invoked capabilities (17 directories)
+    ├── Brainstorming/
+    ├── Compound/
+    ├── DispatchingParallelAgents/
+    ├── ExecutingPlans/
+    ├── FinishingDevelopmentBranch/
+    ├── ManagingPlans/
+    ├── ReactUseEffect/
+    ├── ReceivingCodeReview/
+    ├── RequestingCodeReview/
+    ├── Review/
+    ├── SubagentDrivenDevelopment/
+    ├── SystematicDebugging/
+    ├── TestDrivenDevelopment/
+    ├── UsingGitWorktrees/
+    ├── UsingWorkflows/
+    ├── VerificationBeforeCompletion/
+    └── WritingSkills/
 ```
 
 ## Component Inventory
 
 | Component | Count | Location |
 |-----------|-------|----------|
-| Skills | 16 | `skills/*/SKILL.md` |
+| Skills | 17 | `skills/*/SKILL.md` |
 | Agents | 19 | `agents/*.md`, `agents/review/*.md` |
-| Hooks | 4 | `hooks/*.py`, `hooks/*.sh`, `hooks/workflows/*.sh` |
+| Hooks | 5 | `hooks/*.py`, `hooks/*.sh`, `hooks/workflows/*.sh` |
 | Rules | 8 | `rules/*.md`, `rules/delegator/*.md` |
-| Commands | 9 | `commands/*.md`, `commands/workflows/*.md`, `commands/claude-delegator/*.md` |
+| Commands | 10 | `commands/*.md`, `commands/workflows/*.md`, `commands/claude-delegator/*.md` |
 | Prompts | 5 | `prompts/delegator/*.md` |
 | Config | 3 | `config/delegator/*.json` |
 
@@ -121,6 +124,7 @@ claude-code-config/
 | `/workflows/work` | Command | User types `/workflows/work` |
 | `/workflows/review` | Command | User types `/workflows/review` |
 | `/workflows/compound` | Command | User types `/workflows/compound` |
+| `/workflows/resume` | Command | User types `/workflows/resume` |
 | `/claude-delegator/setup` | Command | User types `/claude-delegator/setup` |
 | `/claude-delegator/task` | Command | User types `/claude-delegator/task` |
 | `/claude-delegator/uninstall` | Command | User types `/claude-delegator/uninstall` |
@@ -135,6 +139,7 @@ Skills are auto-activated by Claude Code based on context matching in `SKILL.md`
 |------|-------|-----------|
 | `keyword-detector.py` | UserPromptSubmit | Always fires |
 | `check-comments.py` | PostToolUse | Matcher: `Write\|Edit` |
+| `parallel-dispatch-guide.py` | PostToolUse | Matcher: `Task` |
 | `require-green-tests.sh` | Stop | Always fires |
 | `todo-enforcer.sh` | Stop | Always fires |
 
@@ -169,7 +174,7 @@ Skills are auto-activated by Claude Code based on context matching in `SKILL.md`
 | Python syntax | `python3 -m py_compile hooks/*.py` | Exit 0 = valid |
 | Shell syntax | `bash -n hooks/*.sh hooks/workflows/*.sh` | Exit 0 = valid |
 | JSON validity | `jq . config/delegator/*.json` | Exit 0 = valid |
-| File existence | `find skills -name "SKILL.md"` | Should find 16 files |
+| File existence | `find skills -name "SKILL.md"` | Should find 17 files |
 | Repo structure | `bash tests/structure_test.sh` | Verifies required files + counts |
 | Repo schema | `python3 tests/schema_test.py` | Validates frontmatter + JSON |
 
