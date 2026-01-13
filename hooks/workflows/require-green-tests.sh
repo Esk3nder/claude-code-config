@@ -3,6 +3,15 @@ set -euo pipefail
 
 umask 077
 
+# Timeout configuration (default: 300 seconds = 5 minutes)
+WORKFLOWS_TEST_TIMEOUT="${WORKFLOWS_TEST_TIMEOUT:-300}"
+
+# Opt-out flag - skip tests entirely if set to "true"
+if [[ "${WORKFLOWS_SKIP_TESTS:-false}" == "true" ]]; then
+  echo "Stop hook: tests skipped via WORKFLOWS_SKIP_TESTS=true"
+  exit 0
+fi
+
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 STATE_DIR="$REPO_ROOT/.claude/.state"
 STATE_FILE="$STATE_DIR/last_tests.env"
@@ -242,10 +251,32 @@ OUTPUT_FILE="$(mktemp "$STATE_DIR/test-output.XXXXXX")"
 cleanup() { rm -f "$OUTPUT_FILE"; }
 trap cleanup EXIT
 
+# Determine timeout command (GNU coreutils on Linux, gtimeout on macOS via Homebrew)
+TIMEOUT_CMD=""
+if command -v timeout >/dev/null 2>&1; then
+  TIMEOUT_CMD="timeout"
+elif command -v gtimeout >/dev/null 2>&1; then
+  TIMEOUT_CMD="gtimeout"
+fi
+
 set +e
-cd "$REPO_ROOT" && bash -lc "$RUN_CMD" >"$OUTPUT_FILE" 2>&1
-STATUS=$?
+if [[ -n "$TIMEOUT_CMD" ]]; then
+  cd "$REPO_ROOT" && "$TIMEOUT_CMD" "$WORKFLOWS_TEST_TIMEOUT" bash -lc "$RUN_CMD" >"$OUTPUT_FILE" 2>&1
+  STATUS=$?
+else
+  # No timeout available - run without timeout
+  cd "$REPO_ROOT" && bash -lc "$RUN_CMD" >"$OUTPUT_FILE" 2>&1
+  STATUS=$?
+fi
 set -e
+
+# Handle timeout (exit code 124)
+if [[ $STATUS -eq 124 ]]; then
+  print_test_output "$OUTPUT_FILE"
+  echo "Stop hook: tests timed out after ${WORKFLOWS_TEST_TIMEOUT}s; blocking completion." >&2
+  exit 1
+fi
+
 if [[ $STATUS -eq 0 ]]; then
   write_state_green "$CMD_HASH" "$LATEST_MTIME"
   print_test_output "$OUTPUT_FILE"

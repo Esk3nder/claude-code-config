@@ -15,7 +15,41 @@ from pathlib import Path
 
 # State directory for context flags (shared with parallel-dispatch-guide.py)
 STATE_DIR = Path.home() / ".claude" / "hooks" / "state"
+HOOKS_DIR = Path.home() / ".claude" / "hooks"
 CONTEXT_FILE = STATE_DIR / "session-context.json"
+
+# Cleanup configuration
+STATE_TTL_SECONDS = 3600  # 1 hour
+MAX_LOG_SIZE_BYTES = 10 * 1024 * 1024  # 10 MB
+
+
+def cleanup_stale_state():
+    """Remove state files older than TTL."""
+    if not STATE_DIR.exists():
+        return
+
+    now = time.time()
+    for state_file in STATE_DIR.glob("*.json"):
+        try:
+            if (now - state_file.stat().st_mtime) > STATE_TTL_SECONDS:
+                state_file.unlink()
+        except OSError:
+            pass
+
+
+def rotate_debug_log():
+    """Truncate debug logs if too large."""
+    if not HOOKS_DIR.exists():
+        return
+
+    for log_file in HOOKS_DIR.glob("*.log"):
+        try:
+            if log_file.stat().st_size > MAX_LOG_SIZE_BYTES:
+                # Keep last 1MB
+                content = log_file.read_text()
+                log_file.write_text(content[-1024 * 1024:])
+        except OSError:
+            pass
 
 # =============================================================================
 # PATTERN DEFINITIONS
@@ -495,6 +529,10 @@ Per skills/ExecutingPlans/SKILL.md.
 
 
 def main():
+    # Cleanup stale state and rotate logs at startup
+    cleanup_stale_state()
+    rotate_debug_log()
+
     try:
         input_data = json.load(sys.stdin)
     except json.JSONDecodeError:

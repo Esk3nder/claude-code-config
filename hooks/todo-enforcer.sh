@@ -23,6 +23,17 @@ log() {
 
 die() {
   log "$1" "ERROR"
+  # Output a block decision instead of silently allowing exit
+  # Use jq if available, otherwise use printf for JSON output
+  if command -v jq &>/dev/null; then
+    jq -n --arg reason "Todo enforcer error: $1" '{"decision": "block", "reason": $reason}'
+  else
+    # Escape the message for JSON (basic escaping)
+    local escaped_msg="${1//\\/\\\\}"
+    escaped_msg="${escaped_msg//\"/\\\"}"
+    escaped_msg="${escaped_msg//$'\n'/\\n}"
+    printf '{"decision": "block", "reason": "Todo enforcer error: %s"}\n' "$escaped_msg"
+  fi
   exit 0
 }
 

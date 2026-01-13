@@ -12,10 +12,45 @@ import json
 import sys
 import time
 import re
+import os
 from pathlib import Path
 
 # State directory (created at runtime in user's home)
 STATE_DIR = Path.home() / ".claude" / "hooks" / "state"
+HOOKS_DIR = Path.home() / ".claude" / "hooks"
+
+# Cleanup configuration
+STATE_TTL_SECONDS = 3600  # 1 hour
+MAX_LOG_SIZE_BYTES = 10 * 1024 * 1024  # 10 MB
+
+
+def cleanup_stale_state():
+    """Remove state files older than TTL."""
+    if not STATE_DIR.exists():
+        return
+
+    now = time.time()
+    for state_file in STATE_DIR.glob("*.json"):
+        try:
+            if (now - state_file.stat().st_mtime) > STATE_TTL_SECONDS:
+                state_file.unlink()
+        except OSError:
+            pass
+
+
+def rotate_debug_log():
+    """Truncate debug logs if too large."""
+    if not HOOKS_DIR.exists():
+        return
+
+    for log_file in HOOKS_DIR.glob("*.log"):
+        try:
+            if log_file.stat().st_size > MAX_LOG_SIZE_BYTES:
+                # Keep last 1MB
+                content = log_file.read_text()
+                log_file.write_text(content[-1024 * 1024:])
+        except OSError:
+            pass
 STATE_FILE = STATE_DIR / "parallel-dispatch.json"
 CONTEXT_FILE = STATE_DIR / "session-context.json"
 
@@ -174,30 +209,42 @@ def determine_agents(context: dict) -> list:
 
 
 def build_dispatch_output(agents: list) -> dict:
-    """Build the hook output for auto-dispatch."""
-    agent_list = ", ".join(agents)
+    """Build advisory output for parallel dispatch recommendation.
+
+    Note: autoDispatch is NOT a valid Claude Code API field.
+    Per official docs, valid PreToolUse outputs are:
+    - permissionDecision: "allow" | "deny" | "ask"
+    - permissionDecisionReason: string
+    - modifiedToolInput: modified tool input (v2.0.10+)
+
+    This hook provides advisory recommendations only.
+    """
+    agent_list = "\n".join(f"  - {a}" for a in agents)
 
     return {
         "hookSpecificOutput": {
             "hookEventName": "PreToolUse",
             "permissionDecision": "allow",
-            "autoDispatch": agents,
-            "dispatchMode": "background",
-            "systemMessage": f"""[PARALLEL AGENTS AUTO-DISPATCHED]
+            "permissionDecisionReason": f"""[PARALLEL DISPATCH ADVISORY]
 
-Detected review/exploration context. Auto-dispatching parallel agents:
-{chr(10).join(f'  - {a}' for a in agents)}
+Based on context analysis, consider dispatching these agents in parallel:
+{agent_list}
 
-These agents are running in background. Continue with your work.
-Use TaskOutput to collect results when needed.
+Suggested pattern:
+  Task(subagent_type="Explore", prompt="...", run_in_background=true)
 
 Per CLAUDE.md: "codebase-search/open-source-librarian = Grep, not consultants. Fire liberally."
-""",
+
+Note: This is advisory only - hooks cannot auto-dispatch agents programmatically.""",
         }
     }
 
 
 def main():
+    # Cleanup stale state and rotate logs at startup
+    cleanup_stale_state()
+    rotate_debug_log()
+
     try:
         input_data = json.load(sys.stdin)
     except json.JSONDecodeError:
