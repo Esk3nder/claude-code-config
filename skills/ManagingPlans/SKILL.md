@@ -16,14 +16,40 @@ Create and maintain structured plans in `plans/{slug}.md`.
 
 ## Creating Plans
 
-1. Create `plans/{slug}.md` in the working directory.
+1. Create `plans/YYYYMMDD-{slug}.md` in the working directory.
    - Ensure `plans/` exists
    - Derive `{slug}` from the goal (lowercase, hyphen-separated, 3–6 words)
-   - Prefix with `YYYYMMDD-`
-2. Capture: goal (1 line), constraints, and success criteria.
-3. List 4–8 tasks max, each with: action, target files, and verification/check.
-4. Mark status boxes `[ ]` initially; keep tasks small and ordered.
-5. Add a verification block (tests, linters, manual checks) to run before finishing.
+2. Use the **strict format** below (MANDATORY):
+
+```markdown
+# Goal
+[One line describing success state]
+
+## Constraints
+- [Hard requirement 1]
+- [Hard requirement 2]
+
+## Tasks
+- [ ] Task 1: [action] → [target files] → [verification]
+- [ ] Task 2: [action] → [target files] → [verification]
+- [ ] Task 3: [action] → [target files] → [verification]
+
+## Verification
+- [ ] Tests pass
+- [ ] Diagnostics clean
+- [ ] [Custom checks]
+
+## Notes
+[Research findings, decisions, blockers - updated during execution]
+```
+
+3. Task checkbox states:
+   - `[ ]` = pending
+   - `[-]` = in progress (only ONE at a time)
+   - `[x]` = completed (add timestamp: `<!-- completed: YYYY-MM-DD -->`)
+
+4. List 4–8 tasks max; keep tasks small and ordered.
+5. Each task MUST have: action, target files, verification step.
 
 ## Maintaining Plans
 

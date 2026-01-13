@@ -96,6 +96,8 @@ PATTERNS_SKILLS = {
     "non_trivial_feature": r"\b(add|implement|create|build)\s+(a\s+)?(\w+\s+)*(feature|system|module|service|component)\b",
     "non_trivial_refactor": r"\b(refactor|restructure|reorganize|migrate)\b",
     "non_trivial_multi": r"\b(across|multiple|several)\s+(files?|modules?|components?)\b",
+    # executing-plans: resume/continue patterns
+    "resume": r"\b(continue|resume|pick\s+up|where\s+we\s+left|carry\s+on|proceed)\b",
 }
 
 
@@ -164,6 +166,12 @@ def write_context_flags(prompt: str) -> None:
         "debugging_context": bool(
             re.search(PATTERNS_SKILLS["debugging"], prompt_lower, re.I)
         ),
+        "tdd_context": bool(
+            re.search(PATTERNS_SKILLS["tdd"], prompt_lower, re.I)
+        ),
+        "planning_context": bool(
+            re.search(PATTERNS_SKILLS["planning"], prompt_lower, re.I)
+        ),
         "compound_context": bool(
             re.search(PATTERNS_SKILLS["compound"], prompt_lower, re.I)
         ),
@@ -176,6 +184,12 @@ def write_context_flags(prompt: str) -> None:
             or re.search(PATTERNS_SKILLS["non_trivial_feature"], prompt_lower, re.I)
             or re.search(PATTERNS_SKILLS["non_trivial_refactor"], prompt_lower, re.I)
             or re.search(PATTERNS_SKILLS["non_trivial_multi"], prompt_lower, re.I)
+        ),
+        "verification_context": bool(
+            re.search(PATTERNS_SKILLS["verification"], prompt_lower, re.I)
+        ),
+        "resume_context": bool(
+            re.search(PATTERNS_SKILLS["resume"], prompt_lower, re.I)
         ),
         # Timestamp for freshness check
         "timestamp": time.time(),
@@ -419,27 +433,70 @@ Design decision or unclear request detected. Use brainstorming skill:
 Ask clarifying questions if multiple interpretations exist with 2x+ effort difference.
 """
 
+CONTEXT_TDD = """
+[TEST-DRIVEN DEVELOPMENT MODE]
+
+Test request detected. Follow TDD workflow:
+
+1. **Red**: Write a failing test first
+2. **Green**: Write minimal code to pass
+3. **Refactor**: Improve with tests green
+
+Before writing implementation:
+- Identify test file location (match existing patterns)
+- Write test cases for main scenarios
+- Include edge cases
+
+Per skills/TestDrivenDevelopment/SKILL.md.
+"""
+
 CONTEXT_PLANNING = """
 [PLAN-DRIVEN MODE]
 
-This task appears non-trivial. Create a plan file FIRST:
+Complex/multi-step task detected. Create a plan file BEFORE writing code:
 
 1. Create `plans/YYYYMMDD-{slug}.md` with:
    - Goal (1 line)
-   - Tasks with checkboxes
+   - Constraints
+   - Tasks with checkboxes ([ ], [-], [x])
    - Verification steps
+   - Notes section
 
-2. Execute via the plan file iteration loop:
+2. Execute via plan file iteration loop:
    - Re-read plan before each task
    - Mark [-] in progress
-   - Execute minimally (only listed files)
    - Update immediately after completion
    - Mark [x] with timestamp
 
-The plan file is your contract with the user. Keep it updated.
+Per skills/ManagingPlans/SKILL.md.
+"""
 
-Skills: ManagingPlans (create), ExecutingPlans (iterate)
-Resume: /workflows/resume
+CONTEXT_VERIFICATION = """
+[VERIFICATION MODE]
+
+Completion signal detected. Before marking done, verify:
+
+1. **All tasks complete**: Check plan file shows all [x]
+2. **Diagnostics clean**: Run lsp_diagnostics on changed files
+3. **Tests pass**: Run project tests if applicable
+4. **Build succeeds**: Run build command if applicable
+
+DO NOT claim completion without evidence.
+
+Per skills/VerificationBeforeCompletion/SKILL.md.
+"""
+
+CONTEXT_RESUME = """
+[RESUME/CONTINUE MODE]
+
+Continuation request detected. Find and resume existing plan:
+
+1. Check `plans/` for incomplete plans (files with [ ] or [-] tasks)
+2. Read the plan file to refresh context
+3. Find first [-] (in-progress) or [ ] (pending) task
+4. Resume execution from there
+
+Per skills/ExecutingPlans/SKILL.md.
 """
 
 
@@ -523,11 +580,23 @@ def main():
     elif re.search(PATTERNS_SKILLS["debugging"], prompt_lower, re.I):
         additional_context = CONTEXT_DEBUGGING
 
+    elif re.search(PATTERNS_SKILLS["tdd"], prompt_lower, re.I):
+        additional_context = CONTEXT_TDD
+
+    elif re.search(PATTERNS_SKILLS["planning"], prompt_lower, re.I):
+        additional_context = CONTEXT_PLANNING
+
     elif re.search(PATTERNS_SKILLS["compound"], prompt_lower, re.I):
         additional_context = CONTEXT_COMPOUND
 
     elif re.search(PATTERNS_SKILLS["brainstorm"], prompt_lower, re.I):
         additional_context = CONTEXT_BRAINSTORM
+
+    elif re.search(PATTERNS_SKILLS["verification"], prompt_lower, re.I):
+        additional_context = CONTEXT_VERIFICATION
+
+    elif re.search(PATTERNS_SKILLS["resume"], prompt_lower, re.I):
+        additional_context = CONTEXT_RESUME
 
     # Priority 8: Original patterns
     elif re.search(PATTERNS_MODE["search"], prompt_lower):
