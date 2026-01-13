@@ -5,7 +5,7 @@ A curated collection of skills, agents, rules, hooks, and workflows for Claude C
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 ![Skills](https://img.shields.io/badge/Skills-17-green)
 ![Agents](https://img.shields.io/badge/Agents-19-orange)
-![Hooks](https://img.shields.io/badge/Hooks-5-purple)
+![Hooks](https://img.shields.io/badge/Hooks-7-purple)
 ![Rules](https://img.shields.io/badge/Rules-8-yellow)
 
 ## Table of Contents
@@ -350,11 +350,22 @@ Hooks are scripts triggered by Claude Code events. Located in `.claude/hooks/`.
 
 | Hook | Event | Purpose |
 |------|-------|---------|
-| `keyword-detector.py` | UserPromptSubmit | Detect keywords, suggest skills |
+| `keyword-detector.py` | UserPromptSubmit | Detect keywords, suggest skills, write context flags |
+| `parallel-dispatch-guide.py` | PreToolUse | Advisory recommendations for parallel agent dispatch |
 | `check-comments.py` | PostToolUse (Write/Edit) | Validate comment policy |
-| `parallel-dispatch-guide.py` | PostToolUse (Task) | Guide parallel agent dispatch |
-| `todo-enforcer.sh` | Stop | Ensure todos are tracked |
 | `require-green-tests.sh` | Stop | Block finish unless tests pass |
+| `require-clean-lint.sh` | Stop | Block finish unless lint passes |
+| `require-clean-types.sh` | Stop | Block finish unless type checks pass |
+| `todo-enforcer.sh` | Stop | Ensure todos are tracked |
+
+**Stop Hook Ordering**: Stop hooks execute sequentially in the order listed in `settings.json`. The default order is: tests → lint → types → todos. Each hook can block completion independently.
+
+**Opt-out Environment Variables**:
+- `WORKFLOWS_SKIP_TESTS=true` - Skip test enforcement
+- `WORKFLOWS_SKIP_LINT=true` - Skip lint enforcement
+- `WORKFLOWS_SKIP_TYPES=true` - Skip type checking enforcement
+
+**Note on parallel-dispatch-guide.py**: This hook provides *advisory* recommendations for parallel agent dispatch. Due to Claude Code API limitations, hooks cannot auto-dispatch agents programmatically. The hook detects patterns that would benefit from parallel work and suggests dispatch commands to the model via `permissionDecisionReason`.
 
 ### Commands/Workflows
 

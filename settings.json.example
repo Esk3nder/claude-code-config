@@ -45,6 +45,22 @@
         "hooks": [
           {
             "type": "command",
+            "command": "~/.claude/hooks/workflows/require-clean-lint.sh"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/workflows/require-clean-types.sh"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
             "command": "~/.claude/hooks/todo-enforcer.sh"
           }
         ]

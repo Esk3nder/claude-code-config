@@ -1,14 +1,14 @@
 # Gap Ledger
 
-**Last Updated:** 2026-01-12 (Pass 3)
+**Last Updated:** 2026-01-13 (Pass 4)
 
 ## Summary
 
 | Severity | Open | Resolved | Total |
 |----------|------|----------|-------|
 | P0 (Critical) | 0 | 0 | 0 |
-| P1 (High) | 2 | 1 | 3 |
-| P2 (Medium) | 6 | 1 | 7 |
+| P1 (High) | 1 | 4 | 5 |
+| P2 (Medium) | 3 | 4 | 7 |
 | P3 (Low) | 0 | 1 | 1 |
 
 ---
@@ -54,45 +54,26 @@ echo "fail" >> test.ts
 ---
 
 ### GAP-009: Missing dependency check for jq
-**Status:** OPEN
-**Risk:** todo-enforcer.sh fails silently if jq not installed
-**Evidence:** `hooks/todo-enforcer.sh:27-29`
-```bash
-if ! command -v jq &>/dev/null; then
-  die "jq is required but not installed"
-fi
-```
-Note: `die` calls `exit 0` which allows completion - wrong behavior!
-**Failing Test Idea:**
-```bash
-# Remove jq from PATH temporarily
-PATH=/bin:/usr/bin ./todo-enforcer.sh
-# Should block exit, not allow it
-```
-**Fix:** Change `die()` to output `{"decision": "block", ...}` for missing dependencies
+**Status:** RESOLVED (Pass 4)
+**Resolution:** `die()` function in todo-enforcer.sh now outputs a proper block decision JSON instead of silently exiting with code 0.
+
+**Evidence:**
+- `hooks/todo-enforcer.sh:24-38` - die() now outputs `{"decision": "block", "reason": "..."}` using printf fallback when jq is unavailable
+- Integration test added: `tests/todo_enforcer_test.sh`
 
 ---
 
 ## P2 - Medium Priority
 
 ### GAP-006: Information disclosure in debug logs
-**Status:** OPEN
-**Risk:** Sensitive code content written to `~/.claude/hooks/debug.log` unbounded
-**Evidence:** `hooks/check-comments.py:141-143`
-```python
-with open(debug_log, "a") as f:
-    f.write(f"Raw input: {raw_input[:2000]}\n")
-```
-**Failing Test Idea:**
-```python
-# Check log file size after multiple invocations
-initial_size = os.path.getsize(debug_log)
-for _ in range(1000):
-    run_hook("check-comments.py", large_input)
-final_size = os.path.getsize(debug_log)
-assert final_size < MAX_LOG_SIZE_MB * 1024 * 1024
-```
-**Fix:** Add log rotation or size limit
+**Status:** RESOLVED (Pass 4)
+**Resolution:** All Python hooks now include `rotate_debug_log()` function that truncates log files at 10MB.
+
+**Evidence:**
+- `hooks/keyword-detector.py:40-52` - rotate_debug_log() keeps last 1MB when file exceeds 10MB
+- `hooks/parallel-dispatch-guide.py:41-53` - same implementation
+- `hooks/check-comments.py:34-46` - same implementation
+- All hooks call cleanup functions at startup in main()
 
 ---
 
@@ -144,23 +125,22 @@ review_tools = extract_allowed_tools("commands/workflows/review.md")
 ---
 
 ### GAP-018: Unbounded debug logging
-**Status:** OPEN
-**Risk:** `~/.claude/hooks/debug.log` grows without limit
-**Evidence:** `hooks/check-comments.py` appends to log without rotation
-**See also:** GAP-006 (same root cause)
+**Status:** RESOLVED (Pass 4)
+**Resolution:** See GAP-006 - all hooks now include log rotation at 10MB limit.
+**See also:** GAP-006
 
 ---
 
 ### GAP-019: No documentation of hook ordering guarantees
-**Status:** OPEN
-**Risk:** Multiple Stop hooks (require-green-tests, todo-enforcer) run - order undefined
-**Evidence:** `settings.json.example` shows two separate Stop hook blocks
-**Failing Test Idea:**
-```python
-# Test that both hooks run regardless of order
-# Verify both can block independently
-```
-**Fix:** Document that Stop hooks run in parallel, both must pass
+**Status:** RESOLVED (Pass 4)
+**Resolution:** README.md Hooks section now documents:
+- Stop hooks execute sequentially in settings.json order
+- Default order: tests → lint → types → todos
+- Each hook can block independently
+
+**Evidence:**
+- `README.md:360-367` - Stop Hook Ordering documentation
+- `settings.json.example:35-68` - Stop hooks in defined order
 
 ---
 
@@ -198,6 +178,41 @@ result = mcp__codex__codex(prompt="just do something")
 
 ---
 
+### GAP-021: autoDispatch is not a valid Claude Code API field
+**Status:** RESOLVED (Pass 4)
+**Resolution:** parallel-dispatch-guide.py now uses only valid PreToolUse API fields.
+
+The previous implementation used `autoDispatch`, `dispatchMode`, and `systemMessage` fields which are NOT supported by Claude Code. These have been removed.
+
+**Valid PreToolUse fields (per Claude Code docs):**
+- `permissionDecision`: "allow" | "deny" | "ask"
+- `permissionDecisionReason`: string
+- `modifiedToolInput`: modified tool input (v2.0.10+)
+
+**Evidence:**
+- `hooks/parallel-dispatch-guide.py:176-205` - now uses only permissionDecision and permissionDecisionReason
+- Advisory text provided via permissionDecisionReason field
+- README.md updated with note about advisory-only nature
+
+---
+
+### GAP-022: No timeout in require-green-tests.sh
+**Status:** RESOLVED (Pass 4)
+**Resolution:** Added timeout and opt-out functionality to require-green-tests.sh.
+
+**Features added:**
+- `WORKFLOWS_TEST_TIMEOUT` env var (default: 300 seconds)
+- `WORKFLOWS_SKIP_TESTS=true` opt-out flag
+- Uses GNU `timeout` or macOS `gtimeout` when available
+- Handles timeout exit code 124 properly
+
+**Evidence:**
+- `hooks/workflows/require-green-tests.sh:6-13` - timeout and opt-out configuration
+- `hooks/workflows/require-green-tests.sh:254-278` - timeout wrapper implementation
+- Integration tests added: `tests/require_green_tests_test.sh`
+
+---
+
 ## Audit Trail
 
 | Pass | Date | Gaps Added | Gaps Resolved |
@@ -205,3 +220,4 @@ result = mcp__codex__codex(prompt="just do something")
 | 1 | 2026-01-11 | GAP-004, 006, 009, 013, 015-020 | - |
 | 2 | 2026-01-12 | GAP-001, 012 | GAP-015 |
 | 3 | 2026-01-12 | - | GAP-001, GAP-012 |
+| 4 | 2026-01-13 | GAP-021, GAP-022 | GAP-006, GAP-009, GAP-018, GAP-019, GAP-021, GAP-022 |
