@@ -92,6 +92,10 @@ PATTERNS_SKILLS = {
     "brainstorm": r"\b(brainstorm|options|approaches|alternatives|design\s+decision|trade.?offs?|pros\s+and\s+cons)\b",
     # verification-before-completion: completion signals
     "verification": r"\b(done|finished|completed|ready\s+to\s+(ship|merge|deploy))\b",
+    # Non-trivial task patterns (auto-planning)
+    "non_trivial_feature": r"\b(add|implement|create|build)\s+(a\s+)?(\w+\s+)*(feature|system|module|service|component)\b",
+    "non_trivial_refactor": r"\b(refactor|restructure|reorganize|migrate)\b",
+    "non_trivial_multi": r"\b(across|multiple|several)\s+(files?|modules?|components?)\b",
 }
 
 
@@ -165,6 +169,13 @@ def write_context_flags(prompt: str) -> None:
         ),
         "brainstorm_context": bool(
             re.search(PATTERNS_SKILLS["brainstorm"], prompt_lower, re.I)
+        ),
+        # Planning context (non-trivial work detection)
+        "planning_context": bool(
+            re.search(PATTERNS_SKILLS["planning"], prompt_lower, re.I)
+            or re.search(PATTERNS_SKILLS["non_trivial_feature"], prompt_lower, re.I)
+            or re.search(PATTERNS_SKILLS["non_trivial_refactor"], prompt_lower, re.I)
+            or re.search(PATTERNS_SKILLS["non_trivial_multi"], prompt_lower, re.I)
         ),
         # Timestamp for freshness check
         "timestamp": time.time(),
@@ -408,6 +419,29 @@ Design decision or unclear request detected. Use brainstorming skill:
 Ask clarifying questions if multiple interpretations exist with 2x+ effort difference.
 """
 
+CONTEXT_PLANNING = """
+[PLAN-DRIVEN MODE]
+
+This task appears non-trivial. Create a plan file FIRST:
+
+1. Create `plans/YYYYMMDD-{slug}.md` with:
+   - Goal (1 line)
+   - Tasks with checkboxes
+   - Verification steps
+
+2. Execute via the plan file iteration loop:
+   - Re-read plan before each task
+   - Mark [-] in progress
+   - Execute minimally (only listed files)
+   - Update immediately after completion
+   - Mark [x] with timestamp
+
+The plan file is your contract with the user. Keep it updated.
+
+Skills: ManagingPlans (create), ExecutingPlans (iterate)
+Resume: /workflows/resume
+"""
+
 
 # =============================================================================
 # MAIN
@@ -471,6 +505,19 @@ def main():
         re.findall(r"\b(and|,)\b", prompt_lower)
     ) >= 2:
         additional_context = CONTEXT_MULTI_MODULE
+
+    # Priority 6.5: Planning patterns (non-trivial work)
+    elif re.search(PATTERNS_SKILLS["planning"], prompt_lower, re.I):
+        additional_context = CONTEXT_PLANNING
+
+    elif re.search(PATTERNS_SKILLS["non_trivial_feature"], prompt_lower, re.I):
+        additional_context = CONTEXT_PLANNING
+
+    elif re.search(PATTERNS_SKILLS["non_trivial_refactor"], prompt_lower, re.I):
+        additional_context = CONTEXT_PLANNING
+
+    elif re.search(PATTERNS_SKILLS["non_trivial_multi"], prompt_lower, re.I):
+        additional_context = CONTEXT_PLANNING
 
     # Priority 7: Skill activation patterns
     elif re.search(PATTERNS_SKILLS["debugging"], prompt_lower, re.I):
