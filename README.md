@@ -158,7 +158,7 @@ After installing, try these to explore:
 │                                                                     │
 │  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐             │
 │  │   Skills    │    │   Agents    │    │    Rules    │             │
-│  │    (16)     │───▶│     (19)    │◀───│     (8)     │             │
+│  │    (17)     │───▶│     (19)    │◀───│     (8)     │             │
 │  └─────────────┘    └─────────────┘    └─────────────┘             │
 │         │                  │                  │                     │
 │         │                  │                  │                     │
@@ -171,7 +171,7 @@ After installing, try these to explore:
 │         ▼                  ▼                  ▼                     │
 │  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐             │
 │  │    Hooks    │    │  Commands   │    │   Plans     │             │
-│  │     (4)     │    │     (9)     │    │  (files)    │             │
+│  │     (5)     │    │    (10)     │    │  (files)    │             │
 │  └─────────────┘    └─────────────┘    └─────────────┘             │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
@@ -244,26 +244,27 @@ Skills are model-invoked capabilities that inject domain knowledge and enforce p
 
 ```
 ┌────────────────────────────────────────────────────────────────────┐
-│                         SKILLS (16)                                │
+│                         SKILLS (17)                                │
 ├────────────────────────────────────────────────────────────────────┤
 │                                                                    │
 │  PLANNING & STRUCTURE          DEVELOPMENT PATTERNS                │
-│  ├── planning-with-files       ├── test-driven-development        │
-│  ├── writing-plans             ├── systematic-debugging           │
-│  ├── executing-plans           ├── subagent-driven-development    │
-│  └── brainstorming             └── dispatching-parallel-agents    │
+│  ├── ManagingPlans             ├── TestDrivenDevelopment          │
+│  ├── ExecutingPlans            ├── SystematicDebugging            │
+│  └── Brainstorming             ├── SubagentDrivenDevelopment      │
+│                                └── DispatchingParallelAgents       │
 │                                                                    │
 │  CODE REVIEW                   GIT & WORKFLOW                      │
-│  ├── requesting-code-review    ├── finishing-a-development-branch │
-│  └── receiving-code-review     ├── using-git-worktrees            │
-│                                └── using-workflows                 │
+│  ├── RequestingCodeReview      ├── FinishingDevelopmentBranch     │
+│  ├── ReceivingCodeReview       ├── UsingGitWorktrees              │
+│  ├── Review                    └── UsingWorkflows                  │
+│  └── Compound                                                      │
 │                                                                    │
 │  QUALITY & VERIFICATION        AUTHORING                           │
-│  └── verification-before-      └── writing-skills                  │
-│      completion                                                    │
+│  └── VerificationBefore-       └── WritingSkills                   │
+│      Completion                                                    │
 │                                                                    │
 │  FRAMEWORK-SPECIFIC                                                │
-│  └── react-useeffect                                               │
+│  └── ReactUseEffect                                                │
 │                                                                    │
 └────────────────────────────────────────────────────────────────────┘
 ```
@@ -372,7 +373,7 @@ Commands provide structured workflows. Located in `.claude/commands/`.
 
 ```
 ┌────────────────────────────────────────────────────────────────────┐
-│                      WORKFLOW COMMANDS                             │
+│                      WORKFLOW COMMANDS (10)                        │
 ├────────────────────────────────────────────────────────────────────┤
 │                                                                    │
 │  /interview          Interactive planning and spec fleshing        │
@@ -390,6 +391,8 @@ Commands provide structured workflows. Located in `.claude/commands/`.
 │       │                                                            │
 │       ▼                                                            │
 │  /workflows/compound     Capture solution in plans/solutions/      │
+│                                                                    │
+│  /workflows/resume       Resume interrupted work from plan file    │
 │                                                                    │
 └────────────────────────────────────────────────────────────────────┘
 ```
@@ -532,16 +535,25 @@ claude-code-config/
 ├── INSTALL.md                # Copy-paste install prompt
 ├── install.sh                # Installation script
 │
-├── skills/                   # Model-invoked capabilities (16)
-│   ├── planning-with-files/
-│   │   ├── SKILL.md          # Skill definition
-│   │   ├── examples.md       # Usage examples
-│   │   └── reference.md      # API reference
-│   ├── test-driven-development/
-│   ├── verification-before-completion/
-│   ├── systematic-debugging/
-│   ├── react-useeffect/
-│   └── ...
+├── skills/                   # Model-invoked capabilities (17)
+│   ├── ManagingPlans/
+│   │   └── SKILL.md          # Skill definition
+│   ├── Brainstorming/
+│   ├── Compound/
+│   ├── DispatchingParallelAgents/
+│   ├── ExecutingPlans/
+│   ├── FinishingDevelopmentBranch/
+│   ├── ReactUseEffect/
+│   ├── ReceivingCodeReview/
+│   ├── RequestingCodeReview/
+│   ├── Review/
+│   ├── SubagentDrivenDevelopment/
+│   ├── SystematicDebugging/
+│   ├── TestDrivenDevelopment/
+│   ├── UsingGitWorktrees/
+│   ├── UsingWorkflows/
+│   ├── VerificationBeforeCompletion/
+│   └── WritingSkills/
 │
 ├── agents/                   # Specialized subagents (19)
 │   ├── codebase-search.md
@@ -575,21 +587,23 @@ claude-code-config/
 │       ├── code-reviewer.md
 │       └── security-analyst.md
 │
-├── hooks/                    # Event-triggered scripts (4)
+├── hooks/                    # Event-triggered scripts (5)
 │   ├── keyword-detector.py   # UserPromptSubmit
-│   ├── check-comments.py     # PostToolUse
+│   ├── check-comments.py     # PostToolUse (Write/Edit)
+│   ├── parallel-dispatch-guide.py  # PostToolUse (Task)
 │   ├── todo-enforcer.sh      # Stop
 │   └── workflows/
 │       └── require-green-tests.sh  # Stop
 │
-├── commands/                 # Slash commands (9)
+├── commands/                 # Slash commands (10)
 │   ├── interview.md          # /interview
 │   ├── workflows/
-│       ├── brainstorm.md     # /workflows/brainstorm
-│       ├── plan.md           # /workflows/plan
-│       ├── work.md           # /workflows/work
-│       ├── review.md         # /workflows/review
-│       └── compound.md       # /workflows/compound
+│   │   ├── brainstorm.md     # /workflows/brainstorm
+│   │   ├── plan.md           # /workflows/plan
+│   │   ├── work.md           # /workflows/work
+│   │   ├── review.md         # /workflows/review
+│   │   ├── compound.md       # /workflows/compound
+│   │   └── resume.md         # /workflows/resume
 │   └── claude-delegator/
 │       ├── setup.md          # /claude-delegator/setup
 │       ├── task.md           # /claude-delegator/task

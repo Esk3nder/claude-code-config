@@ -85,6 +85,7 @@ Fetch and install these files to ~/.claude/:
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/workflows/work.md → ~/.claude/commands/workflows/work.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/workflows/review.md → ~/.claude/commands/workflows/review.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/workflows/compound.md → ~/.claude/commands/workflows/compound.md
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/workflows/resume.md → ~/.claude/commands/workflows/resume.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/claude-delegator/setup.md → ~/.claude/commands/claude-delegator/setup.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/claude-delegator/task.md → ~/.claude/commands/claude-delegator/task.md
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/commands/claude-delegator/uninstall.md → ~/.claude/commands/claude-delegator/uninstall.md
@@ -92,6 +93,7 @@ Fetch and install these files to ~/.claude/:
 **Hooks** (event-triggered scripts):
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/hooks/keyword-detector.py → ~/.claude/hooks/keyword-detector.py
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/hooks/check-comments.py → ~/.claude/hooks/check-comments.py
+- https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/hooks/parallel-dispatch-guide.py → ~/.claude/hooks/parallel-dispatch-guide.py
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/hooks/todo-enforcer.sh → ~/.claude/hooks/todo-enforcer.sh
 - https://raw.githubusercontent.com/Esk3nder/claude-code-config/main/hooks/workflows/require-green-tests.sh → ~/.claude/hooks/workflows/require-green-tests.sh
 
@@ -109,7 +111,8 @@ Add or merge this snippet so the hooks actually run:
       { "hooks": [{ "type": "command", "command": "~/.claude/hooks/keyword-detector.py" }] }
     ],
     "PostToolUse": [
-      { "matcher": "Write|Edit", "hooks": [{ "type": "command", "command": "~/.claude/hooks/check-comments.py" }] }
+      { "matcher": "Write|Edit", "hooks": [{ "type": "command", "command": "~/.claude/hooks/check-comments.py" }] },
+      { "matcher": "Task", "hooks": [{ "type": "command", "command": "~/.claude/hooks/parallel-dispatch-guide.py" }] }
     ],
     "Stop": [
       { "hooks": [{ "type": "command", "command": "~/.claude/hooks/workflows/require-green-tests.sh" }] },
@@ -148,8 +151,8 @@ Create directories as needed, fetch files with curl, and make hook scripts execu
 | Skills | 17 | ManagingPlans, ReactUseEffect, plus the Workflows pack (Brainstorming → ManagingPlans → ExecutingPlans → TDD/Verification → Review/Compound → FinishingDevelopmentBranch, UsingGitWorktrees, WritingSkills) |
 | Agents | 5 + 14 review | Codebase search, media interpreter, OSS librarian, oracle, docs writer + 14 code review specialists |
 | Prompts | 5 | Codex expert prompts (delegator) |
-| Commands | 9 | Interview, Workflows brainstorm/plan/work/review/compound, delegator setup/task/uninstall |
-| Hooks | 4 | Keyword detector, comment checker, todo enforcer, require-green-tests Stop gate |
+| Commands | 10 | Interview, Workflows brainstorm/plan/work/review/compound/resume, delegator setup/task/uninstall |
+| Hooks | 5 | Keyword detector, comment checker, parallel dispatch guide, todo enforcer, require-green-tests Stop gate |
 | Config | 3 | MCP config + expert mapping (reference) |
 | CLAUDE.md | 1 | Global instructions and workflow preferences |
 
